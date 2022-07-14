@@ -1,3 +1,4 @@
+using BakingAppDataLayer;
 using DataAcces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +14,23 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<DataContext>();
+builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>();
+
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequiredUniqueChars = 1;
+
+});
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
