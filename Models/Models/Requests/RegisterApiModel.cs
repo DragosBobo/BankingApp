@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BankingAppControllers.Models.Requests
 {
-    public class DboRegisterApiModel
+    public class RegisterApiModel:IValidatableObject
     {
        
         [Required]
@@ -21,13 +22,22 @@ namespace BankingAppControllers.Models.Requests
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        [StringValidator(MinLength = 8)]
+        
         public string Password { get; set; }
         [Required]
-        [StringValidator(MinLength = 8)]
+       
         public string ConfirmedPassword { get; set; }
 
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var validationResults = new List<ValidationResult>();
 
+            if (Password != ConfirmedPassword)
+            {
+                validationResults.Add(new ValidationResult($"{nameof(Password)} must match with {nameof(ConfirmedPassword)}"));
+            }
 
+            return validationResults;
+        }
     }
 }

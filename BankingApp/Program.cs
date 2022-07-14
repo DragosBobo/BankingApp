@@ -1,4 +1,5 @@
 using BakingAppDataLayer;
+using BankingAppBusiness.Auth;
 using DataAcces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>();
-
+builder.Services.AddScoped<IAuthRepository, AuthRequest>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

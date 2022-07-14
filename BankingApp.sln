@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingApp", "BankingApp\Ba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BakingAppDataLayer", "DataAcces\BakingAppDataLayer.csproj", "{3E3E1299-5C19-436C-B87C-7C9453404A05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingAppBusiness", "BankingAppBusiness\BankingAppBusiness.csproj", "{EBF2B0FD-023C-4AF4-91E3-3320C2680E85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingAppBusiness", "BankingAppBusiness\BankingAppBusiness.csproj", "{EBF2B0FD-023C-4AF4-91E3-3320C2680E85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingAppControllers", "BankingAppControllers\BankingAppControllers.csproj", "{1C338780-FD8E-4336-B110-0E93C1CC8CF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingAppControllers", "BankingAppControllers\BankingAppControllers.csproj", "{1C338780-FD8E-4336-B110-0E93C1CC8CF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingAppApiModels", "Models\BankingAppApiModels.csproj", "{758BF87C-D92B-4784-97C4-E58235B4D4AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1C338780-FD8E-4336-B110-0E93C1CC8CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C338780-FD8E-4336-B110-0E93C1CC8CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C338780-FD8E-4336-B110-0E93C1CC8CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{758BF87C-D92B-4784-97C4-E58235B4D4AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{758BF87C-D92B-4784-97C4-E58235B4D4AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{758BF87C-D92B-4784-97C4-E58235B4D4AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{758BF87C-D92B-4784-97C4-E58235B4D4AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
