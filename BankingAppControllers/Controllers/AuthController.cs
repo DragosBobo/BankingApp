@@ -2,6 +2,7 @@
 using BankingAppBusiness.Auth;
 using BankingAppControllers.Models.Requests;
 using DataAcces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,8 +25,9 @@ namespace BankingAppControllers.Controllers
             _auth = auth;
         }
 
-
+        [AllowAnonymous]
         [HttpPost("Register")]
+       
         public async Task<ActionResult> AddUser([FromBody] RegisterApiModel model)
 
         {
@@ -38,14 +40,20 @@ namespace BankingAppControllers.Controllers
 
 
         }
+        [AllowAnonymous]
         [HttpPost("Login")]
-
-        public async Task<ActionResult> LoginUser(LoginApiModel model)
+        
+        public ActionResult LoginUser(LoginApiModel model)
         {
-             await _auth.Login(model);
-            return Ok("Succes login");
-
-
+             var login = _auth.Login(model);
+            if(login == null)
+            {
+                return BadRequest("Can't login ");
+             }
+            else
+            {
+                return Ok(login);
+            }
 
         }
     }

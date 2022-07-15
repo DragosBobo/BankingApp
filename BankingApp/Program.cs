@@ -1,8 +1,11 @@
 using BakingAppDataLayer;
 using BankingAppBusiness.Auth;
 using DataAcces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +19,26 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>();
-builder.Services.AddScoped<IAuthRepository, AuthRequest>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        RequireExpirationTime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AexAmsGRzrXbOcgK8lhB"))
+
+
+    };
+    
+
+
+}
+
+);
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -43,6 +65,8 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

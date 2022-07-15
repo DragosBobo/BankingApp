@@ -8,6 +8,6 @@ namespace BankingAppBusiness.Auth
      
         Task Register(RegisterApiModel model);
 
-        Task<SignInResult> Login(LoginApiModel model);
+        string Login(LoginApiModel model);
     }
 }
