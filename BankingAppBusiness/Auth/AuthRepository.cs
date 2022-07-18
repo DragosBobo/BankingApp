@@ -68,8 +68,10 @@ namespace BankingAppBusiness.Auth
                 new Claim(ClaimTypes.NameIdentifier , model.UserName),
                 new Claim(ClaimTypes.Email , model.Email),
                 new Claim(ClaimTypes.GivenName , model.FirstName),
-               // new Claim(ClaimTypes.Expiration)
-               
+                new Claim(JwtRegisteredClaimNames.Nbf , new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
+                new Claim(JwtRegisteredClaimNames.Exp , new DateTimeOffset(DateTime.Now.AddHours(1)).ToUnixTimeSeconds().ToString()),
+
+
             };
             var token = new JwtSecurityToken(default,default,claims, signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
