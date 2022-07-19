@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataAcces\BakingAppDataLayer.csproj" />
-    <ProjectReference Include="..\Models\BankingAppApiModels.csproj" />
+    <ProjectReference Include="..\BankingAppDataAcces\BakingAppDataLayer.csproj" />
+    <ProjectReference Include="..\BankingAppModels\BankingAppApiModels.csproj" />
   </ItemGroup>
 
 </Project>

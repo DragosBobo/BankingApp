@@ -31,21 +31,15 @@ namespace BankingAppControllers.Controllers
         public async Task<ActionResult> AddUser([FromBody] RegisterApiModel model)
 
         {
-
             await _auth.Register(model);
             return Ok("Succes Register");
-
-
-
-
-
         }
         [AllowAnonymous]
         [HttpPost("Login")]
         
-        public ActionResult LoginUser(LoginApiModel model)
+        public async Task<ActionResult> LoginUser(LoginApiModel model)
         {
-             var login = _auth.Login(model);
+             var login = await _auth.Login(model);
             if(login == null)
             {
                 return BadRequest("Can't login ");
