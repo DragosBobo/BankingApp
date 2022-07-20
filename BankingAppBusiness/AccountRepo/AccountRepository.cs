@@ -13,25 +13,27 @@ namespace BankingAppBusiness.AccountRepo
         private bool IsExist(Guid id )
         {
            var dbAccount =  _context.Accounts.FirstOrDefault(x => x.Id == id);
-           return dbAccount != null ? true : false ;
+           return false ;
         }
-        public  Account Mapper(CreateAccountModel model)
+        public  static Account Mapper(CreateAccountModel model)
         {
             return new Account
             {
                 Id = model.Id,
                 Currency = (BakingAppDataLayer.Currency)model.Currency,
                 AccountType = (BakingAppDataLayer.AccountType)model.AccountType,
-                Iban = model.Iban
+                Iban = model.Iban,
+                UserId1 = model.UserId1,
+                UserId = model.UserId
             };
         }
         public async Task AddAccount(CreateAccountModel model)
         {
-            if (IsExist(model.Id))
+            if (!IsExist(model.Id))
             {
                var account = Mapper(model);
                await _context.Accounts.AddAsync(account);
-               await _context.SaveChangesAsync();
+               _context.SaveChanges();
             }
         }
         public Task deleteAccount()
