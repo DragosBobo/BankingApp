@@ -1,12 +1,6 @@
 ﻿using BankingAppApiModels.Models.Account;
 using BankingAppBusiness.AccountRepo;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BankingAppControllers.Controllers
 {
     [ApiController]
@@ -21,7 +15,7 @@ namespace BankingAppControllers.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel model)
         {
-            await _account.createAccount(model);
+            await _account.AddAccount(model);
             return Ok("Account created with succes ! ");
         }
 

@@ -1,13 +1,6 @@
 ﻿using BankingAppApiModels.Models.Account;
 using DataAcces;
-using Microsoft.AspNetCore.Mvc;
 using BakingAppDataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BankingAppBusiness.AccountRepo
 {
     public class AccountRepository : IAccountRepository
@@ -19,10 +12,10 @@ namespace BankingAppBusiness.AccountRepo
         }
         private bool IsExist(Guid id )
         {
-           var dbAccount =  _context.Accounts.FindAsync(id);
+           var dbAccount =  _context.Accounts.FirstOrDefault(x => x.Id == id);
            return dbAccount != null ? true : false ;
         }
-        public static Account Mapper(CreateAccountModel model)
+        public  Account Mapper(CreateAccountModel model)
         {
             return new Account
             {
@@ -32,13 +25,13 @@ namespace BankingAppBusiness.AccountRepo
                 Iban = model.Iban
             };
         }
-        public async Task createAccount(CreateAccountModel model)
+        public async Task AddAccount(CreateAccountModel model)
         {
             if (IsExist(model.Id))
             {
-                var account = Mapper(model);
+               var account = Mapper(model);
                await _context.Accounts.AddAsync(account);
-               _context.SaveChanges();
+               await _context.SaveChangesAsync();
             }
         }
         public Task deleteAccount()
@@ -49,7 +42,6 @@ namespace BankingAppBusiness.AccountRepo
         {
             throw new NotImplementedException();
         }
-
         public Task getAccounts()
         {
             throw new NotImplementedException();

@@ -13,7 +13,7 @@ namespace BankingAppBusiness.AccountRepo
     {
         Task getAccounts();
         Task getAccountById();
-        Task createAccount(CreateAccountModel account);
+        Task AddAccount(CreateAccountModel account);
         Task updateAccount();
         Task deleteAccount();
     }
