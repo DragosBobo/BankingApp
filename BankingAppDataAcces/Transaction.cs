@@ -17,10 +17,6 @@ namespace BakingAppDataLayer
 
         public Guid AccountId { get; set; }
         public virtual Account Account { get; set; }
-
-
-
-
     }
     public enum CategoryTransaction { }
 }
