@@ -15,13 +15,12 @@ namespace BankingAppBusiness.Auth
         private readonly DataContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AuthRepository(DataContext context, UserManager<User> userManager, SignInManager<User> signInManager )
+        public AuthRepository(DataContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
         }
-
         private bool IsExist(string userName)
         {
             var dbUser = _context.Users.FirstOrDefault(x => x.UserName == userName);
@@ -38,7 +37,6 @@ namespace BankingAppBusiness.Auth
                 LastName = model.LastName 
             };
         }
-     
         public async Task Register(RegisterApiModel model)
         {
             if (!IsExist(model.UserName))
@@ -50,9 +48,9 @@ namespace BankingAppBusiness.Auth
         public async Task<string> Login(LoginApiModel model)
         {
             var user = await Authenticate(model);
-            if(user != null)
+            if (user != null)
             {
-                var token =  Generate(user);
+                var token = Generate(user);
                 return token;
             }
             else
@@ -60,7 +58,6 @@ namespace BankingAppBusiness.Auth
                 return null;
             }
         }
-
         private string Generate(User model)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AexAmsGRzrXbOcgK8lhB"));
@@ -76,7 +73,6 @@ namespace BankingAppBusiness.Auth
             var token = new JwtSecurityToken(default,default,claims, signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
         public async Task<User> Authenticate(LoginApiModel model)
         {
             var user =  await _userManager.FindByEmailAsync(model.Email);
@@ -85,10 +81,7 @@ namespace BankingAppBusiness.Auth
             {
                 return user;
             }
-            return null;
-            
+            return null;  
         }
-        
-
     }
 }

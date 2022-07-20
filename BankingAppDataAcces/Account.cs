@@ -20,8 +20,6 @@ namespace BakingAppDataLayer
         public virtual ICollection<Transaction> Transactions { get; set; }
 
         public virtual User User { get; set; }
-        
-
     }
     public enum Currency { Ron, Euro, Dollar }
     public enum AccountType { Debit, Credit }

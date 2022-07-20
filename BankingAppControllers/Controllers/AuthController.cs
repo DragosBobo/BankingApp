@@ -17,17 +17,13 @@ namespace BankingAppControllers.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-
         private readonly IAuthRepository _auth;
-
         public AuthController(IAuthRepository auth)
         {
             _auth = auth;
         }
-
         [AllowAnonymous]
         [HttpPost("register")]
-       
         public async Task<ActionResult> AddUser([FromBody] RegisterApiModel model)
         {
             await _auth.Register(model);
@@ -37,8 +33,8 @@ namespace BankingAppControllers.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> LoginUser(LoginApiModel model)
         {
-             var login = await _auth.Login(model);
-            if(login == null)
+            var login = await _auth.Login(model);
+            if( login == null )
             {
                 return BadRequest("Can't login ");
              }

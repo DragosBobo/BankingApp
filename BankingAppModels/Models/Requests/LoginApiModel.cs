@@ -10,8 +10,6 @@ namespace BankingAppControllers.Models.Requests
 {
     public class LoginApiModel 
     {
-
-         
         [Required]
         [EmailAddress]
         public string Email { get; set; }

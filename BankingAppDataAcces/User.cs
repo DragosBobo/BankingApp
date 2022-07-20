@@ -10,16 +10,12 @@ using System.Threading.Tasks;
 
 namespace BakingAppDataLayer
 {
-  
     public class User : IdentityUser
     {
-        [Key]
        public Guid Id { get; set; }
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
        public virtual ICollection<Account> Accounts { get; set; }
-
-
     }
 }
