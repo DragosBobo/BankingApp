@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace BakingAppDataLayer
 {
-    public class User : IdentityUser
-    {
-       public Guid Id { get; set; }
+    public class User : IdentityUser<Guid>
+    { 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

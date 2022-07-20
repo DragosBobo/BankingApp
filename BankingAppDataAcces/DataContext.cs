@@ -1,4 +1,5 @@
 ﻿using BakingAppDataLayer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAcces
 {
-    public class DataContext : IdentityDbContext<User>
+    public class DataContext : IdentityDbContext< User, IdentityRole<Guid>, Guid >
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
