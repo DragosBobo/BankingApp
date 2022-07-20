@@ -1,4 +1,5 @@
 using BakingAppDataLayer;
+using BankingAppBusiness.AccountRepo;
 using BankingAppBusiness.Auth;
 using DataAcces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,8 +19,9 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>();
+builder.Services.AddIdentity<User, IdentityRole<Guid>>().AddEntityFrameworkStores<DataContext>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters

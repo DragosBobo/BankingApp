@@ -11,7 +11,6 @@ namespace BankingAppControllers.Models.Requests
 {
     public class RegisterApiModel:IValidatableObject
     {
-       
         [Required]
         public string FirstName { get; set; }
         [Required]
