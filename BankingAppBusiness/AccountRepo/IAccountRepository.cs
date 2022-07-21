@@ -11,7 +11,7 @@ namespace BankingAppBusiness.AccountRepo
 {
     public interface IAccountRepository
     {
-        Task getAccounts();
+        Task<List<Account>> getAccounts();
         Task getAccountById();
         Task AddAccount(CreateAccountModel account);
         Task updateAccount();

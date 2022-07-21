@@ -12,12 +12,17 @@ namespace BankingAppControllers.Controllers
         {
             _account = account;
         }
-        [HttpPost]
+        [HttpPost("/addAccount")]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountModel model)
         {
             await _account.AddAccount(model);
             return Ok("Account created with succes ! ");
         }
-
+        [HttpGet("/getAccounts")]
+        public async Task<ActionResult> GetAccounts()
+        {
+           var result =  await _account.getAccounts();
+            return (result == null) ? NotFound() : Ok(result);
+        }
     }
 }
