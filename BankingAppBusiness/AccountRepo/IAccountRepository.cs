@@ -12,7 +12,7 @@ namespace BankingAppBusiness.AccountRepo
     public interface IAccountRepository
     {
         Task<List<Account>> getAccounts();
-        Task getAccountById();
+        Task<Account>  getAccountById(Guid id);
         Task AddAccount(CreateAccountModel account);
         Task updateAccount();
         Task deleteAccount();

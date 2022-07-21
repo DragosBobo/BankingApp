@@ -39,9 +39,11 @@ namespace BankingAppBusiness.AccountRepo
         {
             throw new NotImplementedException();
         }
-        public Task getAccountById()
+        public async Task<Account> getAccountById(Guid id)
         {
-            throw new NotImplementedException();
+            var account = await _context.Accounts.FindAsync(id);
+
+            return account;
         }
         public async Task<List<Account>> getAccounts()
         {
