@@ -55,8 +55,12 @@ namespace BankingAppBusiness.AccountRepo
         }
         public async Task updateAccount(Guid id , CreateAccountModel model)
         {
+            var account = _context.Accounts.Where(x => Guid.Equals(x.Id, id)).FirstOrDefault();
+            var newAccount = Mapper(model);
+            account.Currency = newAccount.Currency;
+            _context.Accounts.Update(account);
+            await _context.SaveChangesAsync();
 
-            throw new NotImplementedException();
 
         }
     }

@@ -33,14 +33,14 @@ namespace BankingAppControllers.Controllers
 
             return(result == null) ? NotFound() : Ok(result);   
         }
-        //[HttpPut("/updateAccount")]
-        //public async Task<ActionResult> UpdateAccount([FromHeader]Guid id , [FromBody]CreateAccountModel model)
-        //{
-        //    var result =  _account.updateAccount(id , model);
+        [HttpPut("/updateAccount")]
+        public async Task<ActionResult> UpdateAccount(Guid id, CreateAccountModel model)
+        {
+            await _account.updateAccount(id, model);
 
-        //    return (result == null) ? NotFound() : Ok(result);
+            return Ok("Account succesfuly updated");
 
-        //}
+        }
         [HttpDelete]
         public async Task<ActionResult> DeleteAccount(Guid id)
         {
