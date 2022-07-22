@@ -2,7 +2,6 @@
 using DataAcces;
 using BakingAppDataLayer;
 using Microsoft.EntityFrameworkCore;
-
 namespace BankingAppBusiness.AccountRepo
 {
     public class AccountRepository : IAccountRepository
@@ -10,11 +9,12 @@ namespace BankingAppBusiness.AccountRepo
         private readonly DataContext _context;
         public AccountRepository(DataContext context)
         {
-            _context = context;
+             _context = context;
         }
         private bool IsExist(Guid id)
         {
             var dbAccount = _context.Accounts.FirstOrDefault(x => x.Id == id);
+
             return dbAccount != null ? true : false;
         }
         private static Account Mapper(CreateAccountModel model)
@@ -31,21 +31,8 @@ namespace BankingAppBusiness.AccountRepo
         public async Task AddAccount(CreateAccountModel model)
         {
             var account = Mapper(model);
-
             await _context.Accounts.AddAsync(account);
             await _context.SaveChangesAsync();
-        }
-        public async Task deleteAccount(Guid id)
-        {
-            var account =  _context.Accounts.Where( x=>Guid.Equals(x.Id,id)).FirstOrDefault();
-            _context.Accounts.Remove(account);
-           await _context.SaveChangesAsync();
-        }
-        public async Task<Account> getAccountById(Guid id)
-        {
-            var account = await _context.Accounts.FindAsync(id);
-
-            return account;
         }
         public async Task<List<Account>> getAccounts()
         {
@@ -53,17 +40,48 @@ namespace BankingAppBusiness.AccountRepo
 
            return accounts;
         }
-        public async Task updateAccount(Guid id , CreateAccountModel model)
+        public async Task<Account> getAccountById(Guid id)
         {
-            var account = _context.Accounts.Where(x => Guid.Equals(x.Id, id)).FirstOrDefault();
-            var newAccount = Mapper(model);
-            account.Currency = newAccount.Currency;
-            _context.Accounts.Update(account);
-            await _context.SaveChangesAsync();
+            var account = await _context.Accounts.FindAsync(id);
 
+            return account == null ? null : account ;
+        }
+        public async Task<string> updateAccount(Guid id , CreateAccountModel model)
+        {
+            if (IsExist(id))
+            {
+                var account = _context.Accounts.Where(x => Guid.Equals(x.Id, id)).FirstOrDefault();
+                var newAccount = Mapper(model);
+                account.Currency = newAccount.Currency;
+                account.AccountType = newAccount.AccountType;
+                account.UserId = newAccount.UserId;
+                account.Iban = newAccount.Iban;
+                _context.Accounts.Update(account);
+                await _context.SaveChangesAsync();
 
+                return id.ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public async Task<string> deleteAccount(Guid id)
+        {
+            if (IsExist(id))
+            {
+                var account = _context.Accounts.Where(x => Guid.Equals(x.Id, id)).FirstOrDefault();
+                _context.Accounts.Remove(account);
+                await _context.SaveChangesAsync();
+
+                return id.ToString();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
         
-    }
+ }
 

@@ -1,12 +1,5 @@
 ﻿using BakingAppDataLayer;
 using BankingAppApiModels.Models.Account;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BankingAppBusiness.AccountRepo
 {
     public interface IAccountRepository
@@ -14,7 +7,7 @@ namespace BankingAppBusiness.AccountRepo
         Task<List<Account>> getAccounts();
         Task<Account>  getAccountById(Guid id);
         Task AddAccount(CreateAccountModel account);
-        Task updateAccount(Guid id, CreateAccountModel model);
-        Task deleteAccount(Guid id);
+        Task<string> updateAccount(Guid id, CreateAccountModel model);
+        Task<string> deleteAccount(Guid id);
     }
 }

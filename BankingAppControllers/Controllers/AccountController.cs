@@ -22,31 +22,30 @@ namespace BankingAppControllers.Controllers
         [HttpGet("/getAccounts")]
         public async Task<ActionResult> GetAccounts()
         {
-           var result =  await _account.getAccounts();
+            var result =  await _account.getAccounts();
 
-           return (result == null) ? NotFound() : Ok(result);
+            return (result == null) ? NotFound() : Ok(result);
         }
-        [HttpGet("/getAccoutById")]
+        [HttpGet("/getAccoutById{id}")]
         public async Task<ActionResult> GetAccountById(Guid id)
         {
             var result = await _account.getAccountById(id);
 
             return(result == null) ? NotFound() : Ok(result);   
         }
-        [HttpPut("/updateAccount")]
+        [HttpPut("/updateAccount{id}")]
         public async Task<ActionResult> UpdateAccount(Guid id, CreateAccountModel model)
         {
             await _account.updateAccount(id, model);
 
-            return Ok("Account succesfuly updated");
-
+            return Ok($"Account with id : {id} has been successfully updated !");
         }
-        [HttpDelete]
+        [HttpDelete("/deleteAccount{id}")]
         public async Task<ActionResult> DeleteAccount(Guid id)
         {
             await _account.deleteAccount(id);
 
-            return Ok($"Account with id : {id} was succesfuly deleted ! ");
+            return Ok($"Account with id : {id} has been successfully deleted ! ");
         }
     }
 }
