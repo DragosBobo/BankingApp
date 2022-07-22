@@ -35,9 +35,11 @@ namespace BankingAppBusiness.AccountRepo
             await _context.Accounts.AddAsync(account);
             await _context.SaveChangesAsync();
         }
-        public Task deleteAccount()
+        public async Task deleteAccount(Guid id)
         {
-            throw new NotImplementedException();
+            var account =  _context.Accounts.Where( x=>Guid.Equals(x.Id,id)).FirstOrDefault();
+            _context.Accounts.Remove(account);
+           await _context.SaveChangesAsync();
         }
         public async Task<Account> getAccountById(Guid id)
         {
@@ -51,9 +53,11 @@ namespace BankingAppBusiness.AccountRepo
 
            return accounts;
         }
-        public Task updateAccount()
+        public async Task updateAccount(Guid id , CreateAccountModel model)
         {
+
             throw new NotImplementedException();
+
         }
     }
         

@@ -14,7 +14,7 @@ namespace BankingAppBusiness.AccountRepo
         Task<List<Account>> getAccounts();
         Task<Account>  getAccountById(Guid id);
         Task AddAccount(CreateAccountModel account);
-        Task updateAccount();
-        Task deleteAccount();
+        Task updateAccount(Guid id, CreateAccountModel model);
+        Task deleteAccount(Guid id);
     }
 }
