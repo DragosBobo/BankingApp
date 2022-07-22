@@ -12,9 +12,8 @@ namespace BakingAppDataLayer
 {
     public class User : IdentityUser<Guid>
     { 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+       public string FirstName { get; set; }
+       public string LastName { get; set; }
        public virtual ICollection<Account> Accounts { get; set; }
     }
 }
