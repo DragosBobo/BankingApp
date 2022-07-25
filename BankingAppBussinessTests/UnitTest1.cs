@@ -141,7 +141,30 @@ namespace BankingAppBussinessTests
             Assert.AreEqual(id,result);
 
         }
+        [TestMethod]
+        public async Task TestDeleteAccount()
+        {
+            //Arrange
+            var sut = new AccountRepository(context);
+            var account = new Account
+            {
+                Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
+                AccountType = BakingAppDataLayer.AccountType.Credit,
+                Currency = BakingAppDataLayer.Currency.Ron,
+                Iban = "RO033373618371231238293",
+                UserId = new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
+            };
+            context.Accounts.Add(account);
+            await context.SaveChangesAsync();
+            var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
+            // Act
 
+            var result = await sut.DeleteAccount(new Guid(id));
+
+            //Assert
+
+            Assert.AreEqual(id, result);
+        }
         
     }
 }
