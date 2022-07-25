@@ -8,7 +8,7 @@ namespace BankingAppBusiness.AccountRepo
     {
         Task<List<AccountApiModel>> GetAccounts();
         Task<Account>  GetAccountById(Guid id);
-        Task AddAccount(CreateAccountApiModel account);
+        Task<bool> AddAccount(CreateAccountApiModel account);
         Task<string> UpdateAccount(Guid id, CreateAccountApiModel model);
         Task<string> DeleteAccount(Guid id);
     }
