@@ -99,8 +99,7 @@ namespace BankingAppBussinessTests
             context.Accounts.Add(account);
             await context.SaveChangesAsync();
 
-            await context.SaveChangesAsync();
-
+           
             //Act 
            Account result = await sut.GetAccountById(id);
 
@@ -109,5 +108,40 @@ namespace BankingAppBussinessTests
             Assert.IsNotNull(result);
 
         }
+        [TestMethod]
+        public async Task TestUpdateAccount()
+        {   
+            //Arrange
+            var sut = new AccountRepository(context);
+            var account = new Account
+            {
+                Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
+                AccountType = BakingAppDataLayer.AccountType.Credit,
+                Currency = BakingAppDataLayer.Currency.Ron,
+                Iban = "RO033373618371231238293",
+                UserId = new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
+            };
+            context.Accounts.Add(account);
+            await context.SaveChangesAsync();
+            var model = new CreateAccountApiModel
+            {
+                AccountType = BankingAppApiModels.Models.Requests.AccountType.Credit,
+                Currency = BankingAppApiModels.Models.Requests.Currency.Ron,
+                UserId = new Guid("3386e917-4437-4342-94c1-f2693117d638"),
+                Iban = "RO033373618371231238293",
+            };
+            var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
+
+            //Act 
+
+            var result = await sut.UpdateAccount(new Guid(id), model);
+
+            // Assert
+
+            Assert.AreEqual(id,result);
+
+        }
+
+        
     }
 }
