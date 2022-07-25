@@ -23,7 +23,7 @@ namespace BankingAppBussinessTests
         public async Task TestAddAccount()
         {
             //Arrange 
-            var test = new AccountRepository(context);
+            var sut = new AccountRepository(context);
             var account = new CreateAccountApiModel
             {
                 AccountType = (BankingAppApiModels.Models.Requests.AccountType)1,
@@ -32,7 +32,7 @@ namespace BankingAppBussinessTests
                 UserId = new Guid(),
             };
             //Act 
-            bool result = await test.AddAccount(account);
+            bool result = await sut.AddAccount(account);
 
 
             //Assert
@@ -43,7 +43,7 @@ namespace BankingAppBussinessTests
         public async Task TestGetAccounts()
         {
             //Arrange 
-            var test = new AccountRepository(context);
+            var sut = new AccountRepository(context);
             var accounts = new List<Account>()
             {
                 new()
@@ -66,7 +66,7 @@ namespace BankingAppBussinessTests
             await context.SaveChangesAsync();
 
             // Act 
-            IEnumerable<AccountApiModel> result = await test.GetAccounts();
+            IEnumerable<AccountApiModel> result = await sut.GetAccounts();
 
             // Assert 
             Assert.AreEqual(accounts.Count, result.Count());
@@ -75,7 +75,7 @@ namespace BankingAppBussinessTests
         public async Task TestGetAcountById()
         {
             //Arrange 
-            var test = new AccountRepository(context);
+            var sut = new AccountRepository(context);
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96"),
@@ -89,7 +89,7 @@ namespace BankingAppBussinessTests
             await context.SaveChangesAsync();
 
             //Act 
-            Account result = await test.GetAccountById(id);
+            Account result = await sut.GetAccountById(id);
 
             // Assert 
             Assert.IsNotNull(result);
@@ -99,7 +99,7 @@ namespace BankingAppBussinessTests
         public async Task TestUpdateAccount()
         {
             //Arrange
-            var test = new AccountRepository(context);
+            var sut = new AccountRepository(context);
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
@@ -120,7 +120,7 @@ namespace BankingAppBussinessTests
             var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
 
             //Act 
-            var result = await test.UpdateAccount(new Guid(id), model);
+            var result = await sut.UpdateAccount(new Guid(id), model);
 
             // Assert
             Assert.AreEqual(id, result);
@@ -129,7 +129,7 @@ namespace BankingAppBussinessTests
         public async Task TestDeleteAccount()
         {
             //Arrange
-            var test = new AccountRepository(context);
+            var sut = new AccountRepository(context);
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
@@ -143,7 +143,7 @@ namespace BankingAppBussinessTests
             var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
 
             // Act
-            var result = await test.DeleteAccount(new Guid(id));
+            var result = await sut.DeleteAccount(new Guid(id));
 
             //Assert
             Assert.AreEqual(id, result);
