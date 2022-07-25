@@ -1,23 +1,28 @@
-﻿using BankingAppApiModels.Models.Account;
-using DataAcces;
+﻿using DataAcces;
 using BakingAppDataLayer;
 using Microsoft.EntityFrameworkCore;
+using BankingAppApiModels.Models.Requests;
+using BankingAppApiModels.Models;
+
 namespace BankingAppBusiness.AccountRepo
 {
     public class AccountRepository : IAccountRepository
     {
         private readonly DataContext _context;
+
         public AccountRepository(DataContext context)
         {
              _context = context;
         }
+
         private bool IsExist(Guid id)
         {
             var dbAccount = _context.Accounts.FirstOrDefault(x => x.Id == id);
 
             return dbAccount != null ? true : false;
         }
-        private static Account Mapper(CreateAccountModel model)
+
+        private static Account ConvertToDbModel(CreateAccountApiModel model)
         {
             return new Account
             {
@@ -28,17 +33,33 @@ namespace BankingAppBusiness.AccountRepo
                 UserId = model.UserId,
             };
         }
-        public async Task AddAccount(CreateAccountModel model)
+
+        private static AccountApiModel ConvertToApiModel(Account model)
         {
-            var account = Mapper(model);
+            return new AccountApiModel
+            {
+                Currency= (BankingAppApiModels.Models.Currency)model.Currency,
+                AccountType= (BankingAppApiModels.Models.AccountType)model.AccountType,
+                Iban = model.Iban
+            };
+        }
+
+        public async Task AddAccount(CreateAccountApiModel model)
+        {
+            var account = ConvertToDbModel(model);
+
             await _context.Accounts.AddAsync(account);
             await _context.SaveChangesAsync();
         }
-        public async Task<List<Account>> getAccounts()
+        public async Task<List<AccountApiModel>> getAccounts()
         {
            var accounts = await _context.Accounts.ToListAsync();
+           List<AccountApiModel> result = new List<AccountApiModel>();
 
-           return accounts;
+            foreach (var account in accounts)
+                result.Add(ConvertToApiModel(account));
+
+           return result;
         }
         public async Task<Account> getAccountById(Guid id)
         {
@@ -46,12 +67,12 @@ namespace BankingAppBusiness.AccountRepo
 
             return account == null ? null : account ;
         }
-        public async Task<string> updateAccount(Guid id , CreateAccountModel model)
+        public async Task<string> updateAccount(Guid id , CreateAccountApiModel model)
         {
             if (IsExist(id))
             {
                 var account = _context.Accounts.Where(x => Guid.Equals(x.Id, id)).FirstOrDefault();
-                var newAccount = Mapper(model);
+                var newAccount = ConvertToDbModel(model);
                 account.Currency = newAccount.Currency;
                 account.AccountType = newAccount.AccountType;
                 account.UserId = newAccount.UserId;
