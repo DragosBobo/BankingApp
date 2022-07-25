@@ -26,8 +26,10 @@ namespace BankingAppControllers.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> AddUser([FromBody] RegisterApiModel model)
         {
-            await _auth.Register(model);
-            return Ok("Succes Register");
+            var result = await _auth.Register(model);
+            if (result)
+            { return Ok("User created with succes"); }
+            else return BadRequest();
         }
         [AllowAnonymous]
         [HttpPost("login")]

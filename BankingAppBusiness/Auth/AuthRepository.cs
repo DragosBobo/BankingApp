@@ -36,13 +36,15 @@ namespace BankingAppBusiness.Auth
                 LastName = model.LastName 
             };
         }
-        public async Task Register(RegisterApiModel model)
+        public async Task<bool> Register(RegisterApiModel model)
         {
             if (!IsExist(model.UserName))
             {
                 var user = Mapper(model);
                 await _userManager.CreateAsync(user, model.Password);
+                return true;
             }
+            else return false;
         }
         public async Task<string> Login(LoginApiModel model)
         {

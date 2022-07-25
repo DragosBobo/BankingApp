@@ -12,7 +12,7 @@ namespace BankingAppControllers.Controllers
         {
             _accountRepository = accountRepository;
         }
-        [HttpPost]
+        [HttpPost("/addAccount")]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountApiModel model)
         {
            var result =   await _accountRepository.AddAccount(model);
@@ -26,28 +26,28 @@ namespace BankingAppControllers.Controllers
                 return BadRequest();
             }
         }
-        [HttpGet]
+        [HttpGet("/getAccounts")]
         public async Task<ActionResult> GetAccounts()
         {
             var result = await _accountRepository.GetAccounts();
 
             return (result == null) ? NotFound() : Ok(result);
         }
-        [HttpGet]
+        [HttpGet("/getAccount")]
         public async Task<ActionResult> GetAccountById(Guid id)
         {
             var result = await _accountRepository.GetAccountById(id);
 
             return(result == null) ? NotFound() : Ok(result);   
         }
-        [HttpPut]
+        [HttpPut("updateAccount")]
         public async Task<ActionResult> UpdateAccount(Guid id, CreateAccountApiModel model)
         {
             await _accountRepository.UpdateAccount(id, model);
 
             return Ok($"Account with id : {id} has been successfully updated !");
         }
-        [HttpDelete]
+        [HttpDelete("/deleteAccount")]
         public async Task<ActionResult> DeleteAccount(Guid id)
         {
             await _accountRepository.DeleteAccount(id);

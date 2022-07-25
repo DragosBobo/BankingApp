@@ -2,34 +2,28 @@ using BakingAppDataLayer;
 using BankingAppApiModels.Models;
 using BankingAppApiModels.Models.Requests;
 using BankingAppBusiness.AccountRepo;
-using BankingAppApiModels.Models;
 using DataAcces;
 using Microsoft.EntityFrameworkCore;
 using Currency = BankingAppApiModels.Models.Currency;
 using AccountType = BankingAppApiModels.Models.AccountType;
-
 namespace BankingAppBussinessTests
 {
     [TestClass]
-    public class AccountRepositoryShould
+    public class AccountRepositoryTests
     {
-
         private readonly DataContext context;
 
-        public AccountRepositoryShould()
+        public AccountRepositoryTests()
         {
-            DbContextOptionsBuilder dbOptions = new DbContextOptionsBuilder()
-                .UseInMemoryDatabase(
-                Guid.NewGuid().ToString()
-                );
+            DbContextOptionsBuilder<DataContext> dbOptions = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(Guid.NewGuid().ToString());
             context = new DataContext(dbOptions.Options);
         }
 
         [TestMethod]
         public async Task TestAddAccount()
         {
-            // Arrange 
-            var sut = new AccountRepository(context);
+            //Arrange 
+            var test = new AccountRepository(context);
             var account = new CreateAccountApiModel
             {
                 AccountType = (BankingAppApiModels.Models.Requests.AccountType)1,
@@ -37,20 +31,19 @@ namespace BankingAppBussinessTests
                 Iban = "RO0736183718293",
                 UserId = new Guid(),
             };
-            // Act 
-            bool result = await sut.AddAccount(account);
+            //Act 
+            bool result = await test.AddAccount(account);
 
 
-            // Assert
+            //Assert
             Assert.IsTrue(result);
 
         }
         [TestMethod]
         public async Task TestGetAccounts()
         {
-            // Arrange 
-            var sut = new AccountRepository(context);
-
+            //Arrange 
+            var test = new AccountRepository(context);
             var accounts = new List<Account>()
             {
                 new()
@@ -69,27 +62,23 @@ namespace BankingAppBussinessTests
                 }
 
             };
-           
             context.Accounts.AddRange(accounts);
-            
             await context.SaveChangesAsync();
 
             // Act 
-
-            IEnumerable<AccountApiModel> result = await sut.GetAccounts();
+            IEnumerable<AccountApiModel> result = await test.GetAccounts();
 
             // Assert 
-
             Assert.AreEqual(accounts.Count, result.Count());
         }
         [TestMethod]
         public async Task TestGetAcountById()
         {
-            // Arrange 
-            var sut = new AccountRepository(context);
-
+            //Arrange 
+            var test = new AccountRepository(context);
             var account = new Account
-            {    Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96"),
+            {
+                Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96"),
                 AccountType = BakingAppDataLayer.AccountType.Credit,
                 Currency = BakingAppDataLayer.Currency.Ron,
                 Iban = "RO033373618371231238293",
@@ -99,20 +88,18 @@ namespace BankingAppBussinessTests
             context.Accounts.Add(account);
             await context.SaveChangesAsync();
 
-           
             //Act 
-           Account result = await sut.GetAccountById(id);
+            Account result = await test.GetAccountById(id);
 
             // Assert 
-
             Assert.IsNotNull(result);
 
         }
         [TestMethod]
         public async Task TestUpdateAccount()
-        {   
+        {
             //Arrange
-            var sut = new AccountRepository(context);
+            var test = new AccountRepository(context);
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
@@ -133,19 +120,16 @@ namespace BankingAppBussinessTests
             var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
 
             //Act 
-
-            var result = await sut.UpdateAccount(new Guid(id), model);
+            var result = await test.UpdateAccount(new Guid(id), model);
 
             // Assert
-
-            Assert.AreEqual(id,result);
-
+            Assert.AreEqual(id, result);
         }
         [TestMethod]
         public async Task TestDeleteAccount()
         {
             //Arrange
-            var sut = new AccountRepository(context);
+            var test = new AccountRepository(context);
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
@@ -157,14 +141,14 @@ namespace BankingAppBussinessTests
             context.Accounts.Add(account);
             await context.SaveChangesAsync();
             var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
-            // Act
 
-            var result = await sut.DeleteAccount(new Guid(id));
+            // Act
+            var result = await test.DeleteAccount(new Guid(id));
 
             //Assert
-
             Assert.AreEqual(id, result);
         }
-        
+
     }
+  
 }
