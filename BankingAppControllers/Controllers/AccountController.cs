@@ -8,9 +8,9 @@ namespace BankingAppControllers.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;
-        public AccountController(IAccountRepository account)
+        public AccountController(IAccountRepository accountRepository)
         {
-            _accountRepository = account;
+            _accountRepository = accountRepository;
         }
         [HttpPost]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountApiModel model)
@@ -22,28 +22,28 @@ namespace BankingAppControllers.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAccounts()
         {
-            var result = await _accountRepository.getAccounts();
+            var result = await _accountRepository.GetAccounts();
 
             return (result == null) ? NotFound() : Ok(result);
         }
         [HttpGet]
         public async Task<ActionResult> GetAccountById(Guid id)
         {
-            var result = await _accountRepository.getAccountById(id);
+            var result = await _accountRepository.GetAccountById(id);
 
             return(result == null) ? NotFound() : Ok(result);   
         }
         [HttpPut]
         public async Task<ActionResult> UpdateAccount(Guid id, CreateAccountApiModel model)
         {
-            await _accountRepository.updateAccount(id, model);
+            await _accountRepository.UpdateAccount(id, model);
 
             return Ok($"Account with id : {id} has been successfully updated !");
         }
         [HttpDelete]
         public async Task<ActionResult> DeleteAccount(Guid id)
         {
-            await _accountRepository.deleteAccount(id);
+            await _accountRepository.DeleteAccount(id);
 
             return Ok($"Account with id : {id} has been successfully deleted ! ");
         }

@@ -51,7 +51,7 @@ namespace BankingAppBusiness.AccountRepo
             await _context.Accounts.AddAsync(account);
             await _context.SaveChangesAsync();
         }
-        public async Task<List<AccountApiModel>> getAccounts()
+        public async Task<List<AccountApiModel>> GetAccounts()
         {
            var accounts = await _context.Accounts.ToListAsync();
            List<AccountApiModel> result = new List<AccountApiModel>();
@@ -61,13 +61,13 @@ namespace BankingAppBusiness.AccountRepo
 
            return result;
         }
-        public async Task<Account> getAccountById(Guid id)
+        public async Task<Account> GetAccountById(Guid id)
         {
             var account = await _context.Accounts.FindAsync(id);
 
             return account == null ? null : account ;
         }
-        public async Task<string> updateAccount(Guid id , CreateAccountApiModel model)
+        public async Task<string> UpdateAccount(Guid id , CreateAccountApiModel model)
         {
             if (IsExist(id))
             {
@@ -87,7 +87,7 @@ namespace BankingAppBusiness.AccountRepo
                 return null;
             }
         }
-        public async Task<string> deleteAccount(Guid id)
+        public async Task<string> DeleteAccount(Guid id)
         {
             if (IsExist(id))
             {
