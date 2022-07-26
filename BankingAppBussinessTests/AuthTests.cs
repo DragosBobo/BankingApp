@@ -1,13 +1,5 @@
-﻿using BakingAppDataLayer;
-
-using DataAcces;
-using Microsoft.EntityFrameworkCore;
-
-using BankingAppBusiness.Auth;
-
+﻿using BankingAppBusiness.Auth;
 using BankingAppControllers.Models.Requests;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using NSubstitute;
 
 namespace BankingAppBussinessTests
@@ -15,17 +7,7 @@ namespace BankingAppBussinessTests
     [TestClass]
     public class AuthRepositoryTests
     {
-
-        private readonly DataContext context;
         private readonly IAuthRepository auth = Substitute.For<IAuthRepository>();
-
-        public AuthRepositoryTests()
-        {
-            DbContextOptionsBuilder<DataContext> dbOptions = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase(
-                Guid.NewGuid().ToString());
-            context = new DataContext(dbOptions.Options);
-        }
 
         [TestMethod]
         public async Task TestRegister()
@@ -66,7 +48,6 @@ namespace BankingAppBussinessTests
             LoginApiModel model = new LoginApiModel { 
             Password="Parola12345@",
             Email="Popescu.Marian@Gmail.com"
-            
             };
 
             //Act 
