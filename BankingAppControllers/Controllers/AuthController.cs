@@ -15,8 +15,8 @@ namespace BankingAppControllers.Controllers
             _auth = auth;
         }
         [AllowAnonymous]
-        [HttpPost]
-        public async Task<ActionResult> AddUser([FromBody] RegisterApiModel model)
+        [HttpPost("Register")]
+        public async Task<ActionResult> AddUser(RegisterApiModel model)
         {
             var result = await _auth.Register(model);
             if (result)
@@ -27,7 +27,7 @@ namespace BankingAppControllers.Controllers
             }
         }
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<ActionResult> LoginUser(LoginApiModel model)
         {
             var login = await _auth.Login(model);
