@@ -26,7 +26,7 @@ namespace BankingAppControllers.Controllers
 
             return (result == null) ? NotFound() : Ok(result);
         }
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetAccountById(Guid id)
         {
             var result = await _accountRepository.GetAccountById(id);

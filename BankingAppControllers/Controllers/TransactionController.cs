@@ -1,0 +1,52 @@
+﻿
+using BakingAppDataLayer;
+using BankingAppApiModels.Models.Requests;
+using BankingAppBusiness.TransactionRepo;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BankingAppControllers.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TransactionController : ControllerBase
+    {
+        private readonly ITransactionRepository _transactionRepository;
+        public TransactionController(ITransactionRepository transaction)
+        {
+            _transactionRepository = transaction;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateTransaction(CreateTransactionApiModel model)
+        {
+           var result = await _transactionRepository.CreateTransaction(model);
+            if (result)
+            {
+                return Ok("Transaction created with success !");
+            }
+            return BadRequest("Account doesn't exists ");
+
+        }
+   
+        [HttpGet]
+        public async Task<ActionResult> GetTransactions()
+        {
+            var result = await _transactionRepository.GetTransactions();
+
+            return (result == null) ? NotFound() : Ok(result);
+        }
+        [HttpGet("/raport")]
+        public async Task<ActionResult> GetTransactioReport(Guid id,DateTimeOffset startDate,DateTimeOffset lastDate)
+        {
+            var result = await _transactionRepository.GetTransactioReport(id,startDate,lastDate);
+            return Ok(result);
+        }
+        [HttpGet("{id:Guid}")]
+        public async Task<ActionResult> GetTransactionById(Guid id)
+        {
+            var result = await _transactionRepository.GetTransactionById(id);
+
+            return (result == null) ? NotFound() : Ok(result);
+        }
+    }
+}
