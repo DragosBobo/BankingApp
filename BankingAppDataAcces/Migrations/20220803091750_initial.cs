@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BakingAppDataLayer.Migrations
 {
-    public partial class Update : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -183,7 +183,7 @@ namespace BakingAppDataLayer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<double>(type: "float", nullable: false),
-                    CategoryTransation = table.Column<int>(type: "int", nullable: false),
+                    CategoryTransaction = table.Column<int>(type: "int", nullable: false),
                     TransactionDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

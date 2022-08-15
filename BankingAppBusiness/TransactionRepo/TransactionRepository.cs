@@ -24,12 +24,9 @@ namespace BankingAppBusiness.TransactionRepo
             {
                 TransactionDate = model.TransactionDate,
                 Amount =model.amount,
-                CategoryTransation= (BakingAppDataLayer.CategoryTransaction)model.CategoryTransation,
+                CategoryTransaction= (BakingAppDataLayer.CategoryTransaction)model.CategoryTransaction,
                 AccountId = model.AccountId,
-
             };
-       
-
         }
         private bool IsExist(Guid id)
         {
@@ -51,55 +48,67 @@ namespace BankingAppBusiness.TransactionRepo
             }
         }
 
-        public async Task<List<Transaction>> GetTransactions()
+        public async Task<List<TransactionToApiModel>> GetTransactions()
         {
-            var result = new List<Transaction>();
+          
             var transactions = await _context.Transactions.ToListAsync();
+            List<TransactionToApiModel> result = new List<TransactionToApiModel>();
+
             foreach (var transaction in transactions)
-                result.Add(transaction);
+                result.Add(ConvertToApiModel(transaction.Amount,transaction.CategoryTransaction));
+
             return result;
-            
+
         }
 
-        public async Task<Transaction> GetTransactionById(Guid id)
+        public async Task<TransactionToApiModel> GetTransactionById(Guid id)
         {
-            var account = await _context.Transactions.FindAsync(id);
+            var transaction = await _context.Transactions.FindAsync(id);
+            var result = ConvertToApiModel(transaction.Amount, transaction.CategoryTransaction);
 
-            return account == null ? null : account;
+            return result == null ? null : result;
         }
-        private  TransactionToApiModel ConvertToApiModel(double amount , object t, Currency currency)
+        private  TransactionToApiModel ConvertToApiModel(double amount , object t)
         {
             return new TransactionToApiModel
             {
                 TotalAmount = amount,
                 CategoryName = Enum.GetName(typeof(CategoryTransaction),t),
-                Currency = Enum.GetName(typeof(Currency),currency),
-
+                
             };
         }
-        public async Task<List<TransactionToApiModel>> GetTransactioReport(Guid id, DateTimeOffset minDate, DateTimeOffset maxDate)
+        public async Task<List<TransactionToApiModel>> GetTransactionReport(Guid id, DateTimeOffset minDate, DateTimeOffset maxDate)
         {
             var result = new List<TransactionToApiModel>();
             List<Transaction> transactions = await _context.Transactions.Where(x => x.AccountId == id && x.TransactionDate >= minDate && x.TransactionDate<=maxDate).ToListAsync();
-            var account = await _context.Accounts.FindAsync(id);
-            Currency currency = account.Currency;
+            
+            
 
             foreach (CategoryTransaction t in Enum.GetValues(typeof(CategoryTransaction)))
             {
                 double totalAmount = 0;
                 foreach (Transaction transaction in transactions)
                 {
-                    if (transaction.CategoryTransation.CompareTo(t) == 0)
+                    if (transaction.CategoryTransaction.CompareTo(t) == 0)
                     {
                         totalAmount += transaction.Amount;
                     }
                 }
-                result.Add(ConvertToApiModel(totalAmount, t, currency));
+                result.Add(ConvertToApiModel(totalAmount, t ));
             }
 
             return result;
         }
-
+        public async Task<List<TransactionToApiModel>> GetAccountTransaction(Guid id)
+        {
+            var result = new List<TransactionToApiModel>();
+            List<Transaction> transactions = await _context.Transactions.Where(x => x.AccountId == id ).ToListAsync();
+            foreach(Transaction transaction in transactions)
+            {
+                result.Add(ConvertToApiModel(transaction.Amount, transaction.CategoryTransaction));
+            }
+            return result;
+        }
    
     }
     
