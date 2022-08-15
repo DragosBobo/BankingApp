@@ -1,13 +1,16 @@
 ﻿using BankingAppApiModels.Models.Requests;
 using BankingAppBusiness.AccountRepo;
 using Microsoft.AspNetCore.Mvc;
+
 namespace BankingAppControllers.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;
+        
         public AccountController(IAccountRepository accountRepository)
         {
             _accountRepository = accountRepository;
@@ -20,9 +23,11 @@ namespace BankingAppControllers.Controllers
             return Ok("Account created with succes ! ");
         }
         [HttpGet]
+        
         public async Task<ActionResult> GetAccounts()
         {
             var result = await _accountRepository.GetAccounts();
+            
 
             return (result == null) ? NotFound() : Ok(result);
         }

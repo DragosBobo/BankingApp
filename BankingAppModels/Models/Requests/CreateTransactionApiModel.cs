@@ -8,7 +8,7 @@ namespace BankingAppApiModels.Models.Requests
         [Required]
         public double amount { get; set; }
         [Required]
-        public CategoryTransaction CategoryTransation { get; set; }
+        public CategoryTransaction CategoryTransaction { get; set; }
         [Required]
         public DateTimeOffset TransactionDate { get; set; }
         [Required]

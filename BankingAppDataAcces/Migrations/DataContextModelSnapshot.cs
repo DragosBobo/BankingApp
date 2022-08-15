@@ -59,7 +59,7 @@ namespace BakingAppDataLayer.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<int>("CategoryTransation")
+                    b.Property<int>("CategoryTransaction")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("TransactionDate")

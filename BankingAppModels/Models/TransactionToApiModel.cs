@@ -10,8 +10,8 @@ namespace BankingAppApiModels.Models
         public double TotalAmount { get; set; }
         [Required]
         public string CategoryName { get; set; }
-        [Required]
-        public string Currency { get; set; }
+        //[Required]
+        //public string Currency { get; set; }
       
     }
     public enum CategoryTransaction { Food, Entertainment }

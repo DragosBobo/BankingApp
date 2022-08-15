@@ -3,6 +3,8 @@ using BakingAppDataLayer;
 using Microsoft.EntityFrameworkCore;
 using BankingAppApiModels.Models.Requests;
 using BankingAppApiModels.Models;
+using Currency = BakingAppDataLayer.Currency;
+using AccountType = BakingAppDataLayer.AccountType;
 
 namespace BankingAppBusiness.AccountRepo
 {
@@ -38,9 +40,10 @@ namespace BankingAppBusiness.AccountRepo
         {
             return new AccountApiModel
             {
-                Currency= (BankingAppApiModels.Models.Currency)model.Currency,
-                AccountType= (BankingAppApiModels.Models.AccountType)model.AccountType,
-                Iban = model.Iban
+                Currency=Enum.GetName(typeof(Currency),model.Currency),
+                AccountType= Enum.GetName(typeof(AccountType),model.AccountType),
+                Iban = model.Iban,
+                AccountId=model.Id.ToString(),
             };
         }
 

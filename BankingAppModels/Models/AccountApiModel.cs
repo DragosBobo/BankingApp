@@ -11,14 +11,14 @@ namespace BankingAppApiModels.Models
     {
 
         [Required]
-        public AccountType AccountType { get; set; }
+        public string AccountType { get; set; }
         [Required]
-        public Currency Currency { get; set; }
+        public string Currency { get; set; }
         [Required]
         public string Iban { get; set; }
-        
+        [Required]
+        public string AccountId { get; set; }
 
     }
-    public enum Currency { Ron, Euro, Dollar }
-    public enum AccountType { Debit, Credit }
+    
 }
