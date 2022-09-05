@@ -15,16 +15,9 @@ namespace BankingAppControllers.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountApiModel model)
         {
-            var result = await _accountRepository.AddAccount(model);
+            await _accountRepository.AddAccount(model);
 
-            if (result)
-            {
-                return Ok("Account created with succes ! ");
-            }
-            else
-            {
-                return BadRequest();
-            }
+            return Ok("Account created with succes ! ");
         }
         [HttpGet]
         public async Task<ActionResult> GetAccounts()

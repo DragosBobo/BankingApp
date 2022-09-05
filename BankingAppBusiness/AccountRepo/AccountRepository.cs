@@ -44,22 +44,12 @@ namespace BankingAppBusiness.AccountRepo
             };
         }
 
-        public async Task<bool> AddAccount(CreateAccountApiModel model)
+        public async Task AddAccount(CreateAccountApiModel model)
         {
             var account = ConvertToDbModel(model);
 
             await _context.Accounts.AddAsync(account);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-                return true;
-
-            }
-            catch (DbUpdateException)
-            {
-                return false;
-            }
+            await _context.SaveChangesAsync();
         }
         public async Task<List<AccountApiModel>> GetAccounts()
         {
