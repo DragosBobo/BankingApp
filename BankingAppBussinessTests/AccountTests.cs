@@ -6,6 +6,8 @@ using DataAcces;
 using Microsoft.EntityFrameworkCore;
 using Currency = BankingAppApiModels.Models.Currency;
 using AccountType = BankingAppApiModels.Models.AccountType;
+using Newtonsoft.Json;
+
 namespace BankingAppBussinessTests
 {
     [TestClass]
@@ -57,7 +59,7 @@ namespace BankingAppBussinessTests
             {
                 new()
                 {
-                    AccountType = BakingAppDataLayer.AccountType.Credit,
+                    AccountType = BakingAppDataLayer.AccountType.Debit,
                     Currency = BakingAppDataLayer.Currency.Ron,
                     Iban = "RO033373618371231238293",
                     UserId=new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
@@ -65,23 +67,23 @@ namespace BankingAppBussinessTests
                 new()
                 {
                     AccountType = BakingAppDataLayer.AccountType.Debit,
-                    Currency = BakingAppDataLayer.Currency.Euro,
+                    Currency = BakingAppDataLayer.Currency.Ron,
                     Iban = "RO07361123138373318293",
                     UserId=new Guid("fc231452-7805-40a9-ae8c-9ac4743d4250"),
                 }
                 
             };
-            var expectedResult = new List<AccountApiModel>()
+            var expectedResultApi = new List<AccountApiModel>()
             {
                 new() {
-                    AccountType = 1,
-                    Currency = (Currency)BakingAppDataLayer.Currency.Ron,
+                    AccountType = 0,
+                    Currency = 0,
                     Iban = "RO033373618371231238293",
                 },
                 new()
                 {
                     AccountType = 0,
-                    Currency = (Currency)BakingAppDataLayer.Currency.Euro,
+                    Currency = 0,
                     Iban = "RO07361123138373318293",
                 }
             };
@@ -89,10 +91,13 @@ namespace BankingAppBussinessTests
             await context.SaveChangesAsync();
 
             // Act 
-            IEnumerable<AccountApiModel> result = await sut.GetAccounts();
+            var response = await sut.GetAccounts();
+            var result = JsonConvert.SerializeObject(response);
+            var expectedResult = JsonConvert.SerializeObject(expectedResultApi);
 
             // Assert 
-            Assert.AreEqual(expectedResult,result);
+            Assert.AreEqual(expectedResultApi.Count, response.Count);
+            Assert.AreEqual(expectedResult, result);
         }
         [TestMethod]
         public async Task TestGetAcountById()
