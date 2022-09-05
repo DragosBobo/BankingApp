@@ -104,15 +104,15 @@ namespace BankingAppBussinessTests
         {
             //Arrange 
             var sut = new AccountRepository(context);
+            var id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96");
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96"),
                 AccountType = BakingAppDataLayer.AccountType.Credit,
                 Currency = BakingAppDataLayer.Currency.Ron,
                 Iban = "RO033373618371231238293",
-                UserId = new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
+                UserId = id,
             };
-            var id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96");
             context.Accounts.Add(account);
             await context.SaveChangesAsync();
 
@@ -120,7 +120,7 @@ namespace BankingAppBussinessTests
             Account result = await sut.GetAccountById(id);
 
             // Assert 
-            Assert.IsNotNull(result);
+            Assert.AreEqual(JsonConvert.SerializeObject(account), JsonConvert.SerializeObject(result));
 
         }
         [TestMethod]
