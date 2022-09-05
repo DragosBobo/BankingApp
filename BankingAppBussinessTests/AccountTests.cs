@@ -149,9 +149,11 @@ namespace BankingAppBussinessTests
 
             //Act 
             var result = await sut.UpdateAccount(new Guid(id), model);
+            var accountUpdated = await context.Accounts.FirstOrDefaultAsync(x => x.Id == new Guid(id));
 
             // Assert
             Assert.AreEqual(id, result);
+            Assert.AreEqual(JsonConvert.SerializeObject(account), JsonConvert.SerializeObject(accountUpdated));
         }
         [TestMethod]
         public async Task TestDeleteAccount()
