@@ -37,6 +37,7 @@ namespace BankingAppBussinessTests
             };
             //Act 
             await sut.AddAccount(account);
+            await context.SaveChangesAsync();
             var exists = await context.Accounts.FirstOrDefaultAsync(x => x.Id == guid);
             if(exists == null)
             {
@@ -175,6 +176,7 @@ namespace BankingAppBussinessTests
             // Act
             var result = await sut.DeleteAccount(new Guid(id));
             bool exist = await context.Accounts.FirstOrDefaultAsync(x => x.Id == new Guid(id)) == null ?true : false ;
+           
             //Assert
             Assert.AreEqual(id, result);
             Assert.IsTrue(exist);

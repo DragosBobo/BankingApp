@@ -1,5 +1,8 @@
 ﻿using BankingAppBusiness.Auth;
 using BankingAppControllers.Models.Requests;
+using DataAcces;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NSubstitute;
 
 namespace BankingAppBussinessTests
@@ -8,12 +11,14 @@ namespace BankingAppBussinessTests
     public class AuthRepositoryTests
     {
         private readonly IAuthRepository auth = Substitute.For<IAuthRepository>();
-
+       
         [TestMethod]
         public async Task TestRegister()
         {
             var sut = auth;
-           
+            var Email = "Popescu.Marian@Gmail.com";
+            var Password = "Parola12345@";
+            bool isRegisterd;
             var user = new RegisterApiModel
             {
                 FirstName = "Popescu",
@@ -23,12 +28,21 @@ namespace BankingAppBussinessTests
                 Password = "Parola12345@",
                 ConfirmedPassword = "Parola12345@"
             };
-
+            
             // Act
             bool result = await sut.Register(user);
+            var foundUser = await sut.Login(new LoginApiModel() { Email=Email,Password=Password});
+            if (foundUser != null)
+            {
+                isRegisterd = true;
+            }
+            else
+            {
+                isRegisterd = false;
+            }
 
             //Assert
-            Assert.IsTrue(true);
+            Assert.IsTrue(isRegisterd);
         }
         [TestMethod]
         public async Task TestLogin()
