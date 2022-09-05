@@ -24,17 +24,26 @@ namespace BankingAppBussinessTests
         {
             //Arrange 
             var sut = new AccountRepository(context);
+            var guid = new Guid();
+            bool result;
             var account = new CreateAccountApiModel
             {
                 AccountType = (BankingAppApiModels.Models.Requests.AccountType)1,
                 Currency = (BankingAppApiModels.Models.Requests.Currency)(Currency)1,
                 Iban = "RO0736183718293",
-                UserId = new Guid(),
+                UserId = guid,
             };
             //Act 
-            bool result = await sut.AddAccount(account);
-
-
+            await sut.AddAccount(account);
+            var exists = await context.Accounts.FirstOrDefaultAsync(x => x.Id == guid);
+            if(exists == null)
+            {
+                result = true;
+            }
+            else
+            {
+                result = false;
+            }
             //Assert
             Assert.IsTrue(result);
 
