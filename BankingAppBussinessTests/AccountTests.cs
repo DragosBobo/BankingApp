@@ -69,7 +69,21 @@ namespace BankingAppBussinessTests
                     Iban = "RO07361123138373318293",
                     UserId=new Guid("fc231452-7805-40a9-ae8c-9ac4743d4250"),
                 }
-
+                
+            };
+            var expectedResult = new List<AccountApiModel>()
+            {
+                new() {
+                    AccountType = 1,
+                    Currency = (Currency)BakingAppDataLayer.Currency.Ron,
+                    Iban = "RO033373618371231238293",
+                },
+                new()
+                {
+                    AccountType = 0,
+                    Currency = (Currency)BakingAppDataLayer.Currency.Euro,
+                    Iban = "RO07361123138373318293",
+                }
             };
             context.Accounts.AddRange(accounts);
             await context.SaveChangesAsync();
@@ -78,7 +92,7 @@ namespace BankingAppBussinessTests
             IEnumerable<AccountApiModel> result = await sut.GetAccounts();
 
             // Assert 
-            Assert.AreEqual(accounts.Count, result.Count());
+            Assert.AreEqual(expectedResult,result);
         }
         [TestMethod]
         public async Task TestGetAcountById()
