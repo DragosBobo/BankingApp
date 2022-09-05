@@ -34,20 +34,13 @@ namespace BankingAppControllers.Controllers
 
             return (result == null) ? NotFound() : Ok(result);
         }
-        [HttpGet("/raport")]
+        [HttpGet("/api/Transaction/raport")]
         public async Task<ActionResult> GetTransactioReport(Guid id,DateTimeOffset startDate,DateTimeOffset lastDate)
         {
             var result = await _transactionRepository.GetTransactionReport(id,startDate,lastDate);
             return Ok(result);
         }
-        [HttpGet("/{id:Guid}")]
-        public async Task<ActionResult> GetTransactionById(Guid id)
-        {
-            var result = await _transactionRepository.GetTransactionById(id);
-
-            return (result == null) ? NotFound() : Ok(result);
-        }
-        [HttpGet("/account/{id:Guid}")]
+        [HttpGet("/api/Transaction/{id:Guid}")]
         public async Task<ActionResult> GetAccountTransaction(Guid id)
         {
             var result = await _transactionRepository.GetAccountTransaction(id);
