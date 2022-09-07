@@ -13,7 +13,7 @@ namespace BankingAppBussinessTests
     [TestClass]
     public class AccountRepositoryTests
     {
-        private readonly DataContext context;
+        private  DataContext context;
 
         public AccountRepositoryTests()
         {
@@ -27,7 +27,7 @@ namespace BankingAppBussinessTests
             //Arrange 
             var sut = new AccountRepository(context);
             var guid = new Guid();
-            bool result;
+            
             var account = new CreateAccountApiModel
             {
                 AccountType = (BankingAppApiModels.Models.Requests.AccountType)1,
@@ -38,18 +38,9 @@ namespace BankingAppBussinessTests
             //Act 
             await sut.AddAccount(account);
             await context.SaveChangesAsync();
-            var exists = await context.Accounts.FirstOrDefaultAsync(x => x.Id == guid);
-            if(exists == null)
-            {
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-            //Assert
-            Assert.IsTrue(result);
-
+            var result =  await context.Accounts.FirstOrDefaultAsync( x=>x.UserId==guid);
+           
+            Assert.IsNotNull(result);
         }
         [TestMethod]
         public async Task TestGetAccounts()
