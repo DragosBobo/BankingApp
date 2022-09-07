@@ -7,18 +7,18 @@ using Microsoft.EntityFrameworkCore;
 using Currency = BankingAppApiModels.Models.Currency;
 using AccountType = BankingAppApiModels.Models.AccountType;
 using Newtonsoft.Json;
+using FluentAssertions;
 
 namespace BankingAppBussinessTests
 {
     [TestClass]
-    public class AccountRepositoryTests
+    public class AccountRepositoryTests : BaseTest
     {
         private  DataContext context;
 
         public AccountRepositoryTests()
         {
-            DbContextOptionsBuilder<DataContext> dbOptions = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(Guid.NewGuid().ToString());
-            context = new DataContext(dbOptions.Options);
+            context = Context();
         }
 
         [TestMethod]
@@ -37,10 +37,9 @@ namespace BankingAppBussinessTests
             };
             //Act 
             await sut.AddAccount(account);
-            await context.SaveChangesAsync();
-            var result =  await context.Accounts.FirstOrDefaultAsync( x=>x.UserId==guid);
-           
-            Assert.IsNotNull(result);
+            //Assert 
+            context.Accounts.Should().HaveCount(1);
+            
         }
         [TestMethod]
         public async Task TestGetAccounts()
@@ -88,8 +87,7 @@ namespace BankingAppBussinessTests
             var expectedResult = JsonConvert.SerializeObject(expectedResultApi);
 
             // Assert 
-            Assert.AreEqual(expectedResultApi.Count, response.Count);
-            Assert.AreEqual(expectedResult, result);
+            result.Should().Be(expectedResult);
         }
         [TestMethod]
         public async Task TestGetAcountById()
@@ -112,7 +110,7 @@ namespace BankingAppBussinessTests
             Account result = await sut.GetAccountById(id);
 
             // Assert 
-            Assert.AreEqual(JsonConvert.SerializeObject(account), JsonConvert.SerializeObject(result));
+            result.Should().Be(account);
 
         }
         [TestMethod]
@@ -130,7 +128,7 @@ namespace BankingAppBussinessTests
             };
             context.Accounts.Add(account);
             await context.SaveChangesAsync();
-            var model = new CreateAccountApiModel
+            var updateModel = new CreateAccountApiModel
             {
                 AccountType = BankingAppApiModels.Models.Requests.AccountType.Credit,
                 Currency = BankingAppApiModels.Models.Requests.Currency.Ron,
@@ -140,12 +138,11 @@ namespace BankingAppBussinessTests
             var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
 
             //Act 
-            var result = await sut.UpdateAccount(new Guid(id), model);
+            var result = await sut.UpdateAccount(new Guid(id), updateModel);
             var accountUpdated = await context.Accounts.FirstOrDefaultAsync(x => x.Id == new Guid(id));
 
             // Assert
-            Assert.AreEqual(id, result);
-            Assert.AreEqual(JsonConvert.SerializeObject(account), JsonConvert.SerializeObject(accountUpdated));
+            JsonConvert.SerializeObject(account).Should().Be(JsonConvert.SerializeObject(accountUpdated));
         }
         [TestMethod]
         public async Task TestDeleteAccount()
@@ -166,11 +163,9 @@ namespace BankingAppBussinessTests
 
             // Act
             var result = await sut.DeleteAccount(new Guid(id));
-            bool exist = await context.Accounts.FirstOrDefaultAsync(x => x.Id == new Guid(id)) == null ?true : false ;
-           
+
             //Assert
-            Assert.AreEqual(id, result);
-            Assert.IsTrue(exist);
+            context.Accounts.Should().BeEmpty();
         }
 
     }
