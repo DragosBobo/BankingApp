@@ -21,6 +21,7 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(conne
 builder.Services.AddIdentity<User, IdentityRole<Guid>>().AddEntityFrameworkStores<DataContext>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddCors();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -31,15 +32,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         RequireExpirationTime = true,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
-        ClockSkew = TimeSpan.FromMinutes(5)
-
-
+        ClockSkew = TimeSpan.FromMinutes(5),
     };
-    
-
-
 }
-
 );
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -56,7 +51,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 var app = builder.Build();
 
-
+app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
