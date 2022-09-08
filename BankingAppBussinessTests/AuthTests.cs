@@ -18,7 +18,6 @@ namespace BankingAppBussinessTests
         private readonly Mock<IUserStore<User>> store = new Mock<IUserStore<User>>();
         private readonly Mock<IHttpContextAccessor> contextAccesor = new Mock<IHttpContextAccessor>();
         private readonly Mock<IUserClaimsPrincipalFactory<User>> claimFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-        private readonly Mock<AuthRepository> auth2 = new Mock<AuthRepository>();
         public AuthRepositoryTests()
         {
             context = Context();
