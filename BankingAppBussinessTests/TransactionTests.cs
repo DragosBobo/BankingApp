@@ -97,5 +97,47 @@ namespace BankingAppBussinessTests
             result.Should().NotBeNull();
             result.Should().HaveCount(1);
         }
+        [TestMethod]
+        public async Task TestGetTransactionReport()
+        {
+            //Arrange
+            var transRepo = new TransactionRepository(context);
+            var accountId = new Guid("a0214d14-5570-4970-9834-c86f321e594b");
+            var startDate = DateTime.UtcNow.AddDays(-1);
+            var endDate = DateTime.UtcNow.AddDays(1);
+            var transactions = new List<Transaction>()
+            {
+                new Transaction()
+                {
+                    Amount = 200,
+                    TransactionDate = DateTime.Now,
+                    AccountId = accountId,
+                    CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Entertainment
+                },
+                new Transaction()
+                {
+                    Amount = 350,
+                    TransactionDate = DateTime.Now,
+                    AccountId = accountId,
+                    CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Food
+                },
+                new Transaction()
+                {
+                    Amount = 750,
+                    TransactionDate = DateTime.Now,
+                    AccountId = new Guid("52971ead-df4b-4a87-84a1-f7a710f164ba"),
+                    CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Food
+                }
+            };
+            context.Transactions.AddRange(transactions);
+            context.SaveChanges();
+
+            //Act
+            var result =  await transRepo.GetTransactionReport(accountId, startDate, endDate);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(2);
+        }
     }
 }
