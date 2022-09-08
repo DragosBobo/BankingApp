@@ -1,13 +1,10 @@
 using BakingAppDataLayer;
-using BankingAppApiModels.Models;
 using BankingAppApiModels.Models.Requests;
 using BankingAppBusiness.AccountRepo;
-using DataAcces;
 using Microsoft.EntityFrameworkCore;
-using Currency = BankingAppApiModels.Models.Currency;
-using AccountType = BankingAppApiModels.Models.AccountType;
-using Newtonsoft.Json;
 using FluentAssertions;
+using AccountType = BankingAppApiModels.Models.Requests.AccountType;
+using Currency = BankingAppApiModels.Models.Requests.Currency;
 
 namespace BankingAppBussinessTests
 {
@@ -22,8 +19,8 @@ namespace BankingAppBussinessTests
             var guid = new Guid();
             var account = new CreateAccountApiModel
             {
-                AccountType = (BankingAppApiModels.Models.Requests.AccountType)AccountType.Credit,
-                Currency = (BankingAppApiModels.Models.Requests.Currency)Currency.Euro,
+                AccountType =AccountType.Credit,
+                Currency = Currency.Euro,
                 Iban = "RO0736183718293",
                 UserId = guid,
             };
@@ -34,7 +31,6 @@ namespace BankingAppBussinessTests
             //Assert 
             context.Accounts.Should().HaveCount(1);
             foundAccount.Should().BeEquivalentTo(foundAccount, opt => opt.Excluding(si => si.Id));
-
         }
         [TestMethod]
         public async Task TestGetAccounts()
@@ -126,26 +122,25 @@ namespace BankingAppBussinessTests
         {
             //Arrange
             var sut = new AccountRepository(context);
+            var id =new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86");
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
                 AccountType = BakingAppDataLayer.AccountType.Credit,
                 Currency = BakingAppDataLayer.Currency.Ron,
                 Iban = "RO033373618371231238293",
-                UserId = new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
+                UserId = id,
             };
             context.Accounts.Add(account);
             await context.SaveChangesAsync();
-            var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
-
+            
             // Act
-            var result = await sut.DeleteAccount(new Guid(id));
+            var result = await sut.DeleteAccount(id);
+            var foundAccount = await context.Accounts.FirstOrDefaultAsync(x => x.Id == id); 
 
             //Assert
             context.Accounts.Should().BeEmpty();
+            foundAccount.Should().BeNull();
         }
-
     }
-    public enum Currency { Ron, Euro, Dollar }
-    public enum AccountType { Debit, Credit }
 }
