@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BakingAppDataLayer", "Banki
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingAppApiModels", "BankingAppModels\BankingAppApiModels.csproj", "{39F415A5-DD1A-43B3-921F-129DB37BAD77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingAppBussinessTests", "BankingAppBussinessTests\BankingAppBussinessTests.csproj", "{2036C8E1-E30D-4EC7-BF73-A835F377DC6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{39F415A5-DD1A-43B3-921F-129DB37BAD77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39F415A5-DD1A-43B3-921F-129DB37BAD77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39F415A5-DD1A-43B3-921F-129DB37BAD77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2036C8E1-E30D-4EC7-BF73-A835F377DC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2036C8E1-E30D-4EC7-BF73-A835F377DC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2036C8E1-E30D-4EC7-BF73-A835F377DC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2036C8E1-E30D-4EC7-BF73-A835F377DC6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
