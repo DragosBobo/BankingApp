@@ -11,7 +11,6 @@ namespace BankingAppBusiness.TransactionRepo
     {   
         Task<List<TransactionToApiModel>> GetTransactionReport(Guid transactionId,DateTimeOffset startDate , DateTimeOffset lastDate);
         Task CreateTransaction(CreateTransactionApiModel model);
-        Task<TransactionToApiModel> GetTransactionById(Guid transactionId);
         Task<List<TransactionToApiModel>> GetTransactions();
         Task<List<TransactionToApiModel>> GetAccountTransaction(Guid id);
     }

@@ -2,6 +2,7 @@ using BakingAppDataLayer;
 using BankingAppApiModels.Models.Requests;
 using BankingAppBusiness.TransactionRepo;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using CategoryTransaction = BankingAppApiModels.Models.Requests.CategoryTransaction;
 
 namespace BankingAppBussinessTests
@@ -62,6 +63,39 @@ namespace BankingAppBussinessTests
 
             //Assert
             result.Should().HaveCount(transactions.Count);
+        }
+        [TestMethod]
+        public async Task TestGetTransactionById()
+        {
+            //Arrange
+            var transRepo = new TransactionRepository(context);
+            var accountId = new Guid("a0214d14-5570-4970-9834-c86f321e594b");
+            var transactions = new List<Transaction>()
+            {
+                new Transaction()
+                {
+                    Amount = 200,
+                    TransactionDate = DateTime.Now,
+                    AccountId = new Guid("a0214d14-5570-4970-9834-c86f321e594b"),
+                    CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Entertainment
+                },
+                new Transaction()
+                {
+                    Amount = 350,
+                    TransactionDate = DateTime.Now,
+                    AccountId = new Guid("cb254d14-5570-4323-9834-c86f3321594b"),
+                    CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Food
+                }
+            };
+            context.Transactions.AddRange(transactions);
+            context.SaveChanges();
+
+            //Act
+            var result = await transRepo.GetAccountTransaction(accountId);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(1);
         }
     }
 }

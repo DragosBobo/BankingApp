@@ -54,8 +54,9 @@ namespace BankingAppBusiness.TransactionRepo
         public async Task CreateTransaction(CreateTransactionApiModel model)
         {
             var transaction = ConvertToDbModel(model);
-            await _context.Transactions.AddAsync(transaction);
-            await _context.SaveChangesAsync();
+             await _context.Transactions.AddAsync(transaction);
+             await _context.SaveChangesAsync();
+          
         }
         public async Task<List<TransactionToApiModel>> GetTransactions()
         {
@@ -66,13 +67,6 @@ namespace BankingAppBusiness.TransactionRepo
 
             return result;
 
-        }
-        public async Task<TransactionToApiModel> GetTransactionById(Guid id)
-        {
-            var transaction = await _context.Transactions.FindAsync(id);
-            var result = ConvertToApiModel(transaction.Amount, transaction.CategoryTransaction);
-
-            return result == null ? null : result;
         }
         private  TransactionToApiModel ConvertToApiModel(double amount , object t)
         {

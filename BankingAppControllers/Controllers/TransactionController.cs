@@ -20,10 +20,8 @@ namespace BankingAppControllers.Controllers
         public async Task<ActionResult> CreateTransaction(CreateTransactionApiModel model)
         {
             await _transactionRepository.CreateTransaction(model);
-
             return Ok("Transaction created with success !");
         }
-   
         [HttpGet]
         public async Task<ActionResult> GetTransactions()
         {
@@ -37,7 +35,7 @@ namespace BankingAppControllers.Controllers
             var result = await _transactionRepository.GetTransactionReport(id,startDate,lastDate);
             return Ok(result);
         }
-        [HttpGet("/api/Transaction/{id:Guid}")]
+        [HttpGet("/api/Transaction/id")]
         public async Task<ActionResult> GetAccountTransaction(Guid id)
         {
             var result = await _transactionRepository.GetAccountTransaction(id);
