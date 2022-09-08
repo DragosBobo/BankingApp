@@ -14,13 +14,6 @@ namespace BankingAppBussinessTests
     [TestClass]
     public class AccountRepositoryTests : BaseTest
     {
-        private  DataContext context;
-
-        public AccountRepositoryTests()
-        {
-            context = Context();
-        }
-
         [TestMethod]
         public async Task TestAddAccount()
         {

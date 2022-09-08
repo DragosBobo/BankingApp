@@ -11,8 +11,7 @@ namespace BankingAppBussinessTests
 {
     [TestClass]
     public class AuthRepositoryTests : BaseTest
-    {
-        private readonly DataContext context;
+    { 
         private readonly Mock<UserManager<User>> userManager;
         private readonly Mock<SignInManager<User>> signInManager;
         private readonly Mock<IUserStore<User>> store = new Mock<IUserStore<User>>();
@@ -20,7 +19,6 @@ namespace BankingAppBussinessTests
         private readonly Mock<IUserClaimsPrincipalFactory<User>> claimFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
         public AuthRepositoryTests()
         {
-            context = Context();
             userManager = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
             userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success).Callback<User, string>((x, y) => { context.Add(x); context.SaveChanges(); });
             signInManager = new Mock<SignInManager<User>>(userManager.Object, contextAccesor.Object, claimFactory.Object, null, null, null);
@@ -29,7 +27,7 @@ namespace BankingAppBussinessTests
 
         public async Task TestRegister()
         {   //Arange
-            var sut = new AuthRepository(context, userManager.Object, signInManager.Object);
+            var authRepo = new AuthRepository(context, userManager.Object, signInManager.Object);
             var user = new RegisterApiModel
             {
                 FirstName = "Popescu",
@@ -41,17 +39,19 @@ namespace BankingAppBussinessTests
             };
 
             //Act
-            await sut.Register(user);
+            await authRepo.Register(user);
+            var userFound = context.Users.FirstOrDefault(x => x.FirstName == user.FirstName && x.LastName == user.LastName);
 
             //Assert
             context.Users.Should().HaveCount(1);
+            userFound.Should().BeEquivalentTo(user, opts => opts.Excluding(si => si.Password).Excluding(si => si.ConfirmedPassword));
         }
         [TestMethod]
 
         public async Task TestLogin()
         {
             //Arange
-            var sut = new AuthRepository(context, userManager.Object, signInManager.Object);
+            var authRepo = new AuthRepository(context, userManager.Object, signInManager.Object);
             var user = new RegisterApiModel
             {
                 FirstName = "Popescu",
@@ -68,8 +68,8 @@ namespace BankingAppBussinessTests
             };
 
             //Act
-            await sut.Register(user);
-            var result = sut.Login(loginModel);
+            await authRepo.Register(user);
+            var result = authRepo.Login(loginModel);
 
             //Assert
             result.Should().NotBeNull();
