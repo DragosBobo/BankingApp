@@ -1,15 +1,7 @@
-﻿using BakingAppDataLayer;
-using BankingAppBusiness.Auth;
+﻿using BankingAppBusiness.Auth;
 using BankingAppControllers.Models.Requests;
-using DataAcces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankingAppControllers.Controllers
 {
@@ -22,6 +14,7 @@ namespace BankingAppControllers.Controllers
         {
             _auth = auth;
         }
+
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> AddUser([FromBody] RegisterApiModel model)
@@ -29,6 +22,7 @@ namespace BankingAppControllers.Controllers
             await _auth.Register(model);
             return Ok("Succes Register");
         }
+
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult> LoginUser(LoginApiModel model)
@@ -42,8 +36,6 @@ namespace BankingAppControllers.Controllers
             {
                 return Ok(login);
             }
-
         }
     }
-
 }
