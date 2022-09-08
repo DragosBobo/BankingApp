@@ -18,9 +18,8 @@ namespace BankingAppBussinessTests
         public async Task TestAddAccount()
         {
             //Arrange 
-            var sut = new AccountRepository(context);
+            var authRepo = new AccountRepository(context);
             var guid = new Guid();
-            
             var account = new CreateAccountApiModel
             {
                 AccountType = (BankingAppApiModels.Models.Requests.AccountType)1,
@@ -29,10 +28,13 @@ namespace BankingAppBussinessTests
                 UserId = guid,
             };
             //Act 
-            await sut.AddAccount(account);
+            await authRepo.AddAccount(account);
+            var foundAccount = await context.Accounts.FirstOrDefaultAsync(x=>x.Iban == account.Iban);
+            
             //Assert 
             context.Accounts.Should().HaveCount(1);
-            
+            foundAccount.Should().BeEquivalentTo(foundAccount, opt => opt.Excluding(si => si.Id));
+
         }
         [TestMethod]
         public async Task TestGetAccounts()
