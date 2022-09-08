@@ -22,8 +22,8 @@ namespace BankingAppBussinessTests
             var guid = new Guid();
             var account = new CreateAccountApiModel
             {
-                AccountType = (BankingAppApiModels.Models.Requests.AccountType)1,
-                Currency = (BankingAppApiModels.Models.Requests.Currency)(Currency)1,
+                AccountType = (BankingAppApiModels.Models.Requests.AccountType)AccountType.Credit,
+                Currency = (BankingAppApiModels.Models.Requests.Currency)Currency.Euro,
                 Iban = "RO0736183718293",
                 UserId = guid,
             };
@@ -40,7 +40,7 @@ namespace BankingAppBussinessTests
         public async Task TestGetAccounts()
         {
             //Arrange 
-            var sut = new AccountRepository(context);
+            var authRepo = new AccountRepository(context);
             var accounts = new List<Account>()
             {
                 new()
@@ -57,32 +57,15 @@ namespace BankingAppBussinessTests
                     Iban = "RO07361123138373318293",
                     UserId=new Guid("fc231452-7805-40a9-ae8c-9ac4743d4250"),
                 }
-                
-            };
-            var expectedResultApi = new List<AccountApiModel>()
-            {
-                new() {
-                    AccountType = 0,
-                    Currency = 0,
-                    Iban = "RO033373618371231238293",
-                },
-                new()
-                {
-                    AccountType = 0,
-                    Currency = 0,
-                    Iban = "RO07361123138373318293",
-                }
             };
             context.Accounts.AddRange(accounts);
             await context.SaveChangesAsync();
 
             // Act 
-            var response = await sut.GetAccounts();
-            var result = JsonConvert.SerializeObject(response);
-            var expectedResult = JsonConvert.SerializeObject(expectedResultApi);
+            var response = await authRepo.GetAccounts();
 
             // Assert 
-            result.Should().Be(expectedResult);
+            response.Should().HaveCount(accounts.Count);
         }
         [TestMethod]
         public async Task TestGetAcountById()
@@ -164,5 +147,6 @@ namespace BankingAppBussinessTests
         }
 
     }
-  
+    public enum Currency { Ron, Euro, Dollar }
+    public enum AccountType { Debit, Credit }
 }
