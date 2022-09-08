@@ -94,10 +94,11 @@ namespace BankingAppBussinessTests
         public async Task TestUpdateAccount()
         {
             //Arrange
-            var sut = new AccountRepository(context);
+            var authRepo = new AccountRepository(context);
+            var id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86");
             var account = new Account
             {
-                Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
+                Id = id,
                 AccountType = BakingAppDataLayer.AccountType.Credit,
                 Currency = BakingAppDataLayer.Currency.Ron,
                 Iban = "RO033373618371231238293",
@@ -110,16 +111,15 @@ namespace BankingAppBussinessTests
                 AccountType = BankingAppApiModels.Models.Requests.AccountType.Credit,
                 Currency = BankingAppApiModels.Models.Requests.Currency.Ron,
                 UserId = new Guid("3386e917-4437-4342-94c1-f2693117d638"),
-                Iban = "RO033373618371231238293",
+                Iban = "RO012315751234523",
             };
-            var id = "2df99e1f-ca5c-4c62-a444-c379b900cb86";
-
+           
             //Act 
-            var result = await sut.UpdateAccount(new Guid(id), updateModel);
-            var accountUpdated = await context.Accounts.FirstOrDefaultAsync(x => x.Id == new Guid(id));
+            var result = await authRepo.UpdateAccount(id, updateModel);
+            var accountUpdated = await context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
 
             // Assert
-            JsonConvert.SerializeObject(account).Should().Be(JsonConvert.SerializeObject(accountUpdated));
+            accountUpdated.Should().BeEquivalentTo(updateModel);
         }
         [TestMethod]
         public async Task TestDeleteAccount()
