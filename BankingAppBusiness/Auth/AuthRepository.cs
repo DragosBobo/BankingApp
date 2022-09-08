@@ -24,27 +24,25 @@ namespace BankingAppBusiness.Auth
         {
             var dbUser = _context.Users.FirstOrDefault(x => x.UserName == userName);
 
-            return dbUser != null ? true : false ;
+            return dbUser != null ? true : false;
         }
         private User Mapper(RegisterApiModel model)
         {
-            return new User 
-            { 
+            return new User
+            {
                 Email = model.Email,
                 UserName = model.UserName,
                 FirstName = model.FirstName,
-                LastName = model.LastName 
+                LastName = model.LastName
             };
         }
-        public async Task<bool> Register(RegisterApiModel model)
+        public async Task Register(RegisterApiModel model)
         {
             if (!IsExist(model.UserName))
             {
                 var user = Mapper(model);
                 await _userManager.CreateAsync(user, model.Password);
-                return true;
             }
-            else return false;
         }
         public async Task<string> Login(LoginApiModel model)
         {
@@ -62,7 +60,7 @@ namespace BankingAppBusiness.Auth
         private string Generate(User model)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AexAmsGRzrXbOcgK8lhB"));
-            var credentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier , model.UserName),
@@ -71,18 +69,18 @@ namespace BankingAppBusiness.Auth
                 new Claim(JwtRegisteredClaimNames.Nbf , new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
                 new Claim(JwtRegisteredClaimNames.Exp , new DateTimeOffset(DateTime.Now.AddHours(1)).ToUnixTimeSeconds().ToString()),
             };
-            var token = new JwtSecurityToken(default,default,claims, signingCredentials: credentials);
+            var token = new JwtSecurityToken(default, default, claims, signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
         public async Task<User> Authenticate(LoginApiModel model)
         {
-            var user =  await _userManager.FindByEmailAsync(model.Email);
-            var result =  await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if(result.Succeeded)
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+            if (result.Succeeded)
             {
                 return user;
             }
-            return null;  
+            return null;
         }
     }
 }

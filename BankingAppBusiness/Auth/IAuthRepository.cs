@@ -5,7 +5,7 @@ namespace BankingAppBusiness.Auth
 {
     public interface IAuthRepository
     {   
-        Task<bool> Register(RegisterApiModel model);
+        Task Register(RegisterApiModel model);
         Task<string> Login(LoginApiModel model);
     }
 }
