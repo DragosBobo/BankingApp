@@ -51,18 +51,11 @@ namespace BankingAppBusiness.TransactionRepo
             }
             return result;
         }
-        public async Task<bool> CreateTransaction(CreateTransactionApiModel model)
+        public async Task CreateTransaction(CreateTransactionApiModel model)
         {
             var transaction = ConvertToDbModel(model);
-            if (IsExist(model.AccountId)){
-                await _context.Transactions.AddAsync(transaction);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            await _context.Transactions.AddAsync(transaction);
+            await _context.SaveChangesAsync();
         }
         public async Task<List<TransactionToApiModel>> GetTransactions()
         {

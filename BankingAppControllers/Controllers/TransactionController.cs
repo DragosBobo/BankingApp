@@ -19,12 +19,9 @@ namespace BankingAppControllers.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateTransaction(CreateTransactionApiModel model)
         {
-           var result = await _transactionRepository.CreateTransaction(model);
-            if (result)
-            {
-                return Ok("Transaction created with success !");
-            }
-            return BadRequest("Account doesn't exists ");
+            await _transactionRepository.CreateTransaction(model);
+
+            return Ok("Transaction created with success !");
         }
    
         [HttpGet]
