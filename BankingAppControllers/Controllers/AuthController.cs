@@ -1,7 +1,15 @@
-﻿using BankingAppBusiness.Auth;
+﻿using BakingAppDataLayer;
+using BankingAppBusiness.Auth;
 using BankingAppControllers.Models.Requests;
+using DataAcces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BankingAppControllers.Controllers
 {
@@ -15,26 +23,21 @@ namespace BankingAppControllers.Controllers
             _auth = auth;
         }
         [AllowAnonymous]
-        [HttpPost("Register")]
-        public async Task<ActionResult> AddUser(RegisterApiModel model)
+        [HttpPost("register")]
+        public async Task<ActionResult> AddUser([FromBody] RegisterApiModel model)
         {
-            var result = await _auth.Register(model);
-            if (result)
-            { return Ok("User created with succes"); }
-            else
-            {
-                return BadRequest("User can't be created");
-            }
+            await _auth.Register(model);
+            return Ok("Succes Register");
         }
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult> LoginUser(LoginApiModel model)
         {
             var login = await _auth.Login(model);
-            if( login == null )
+            if (login == null)
             {
-                return BadRequest($"Can't login {model.Email}");
-             }
+                return BadRequest("Can't login ");
+            }
             else
             {
                 return Ok(login);
