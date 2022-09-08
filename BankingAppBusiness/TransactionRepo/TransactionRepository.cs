@@ -31,6 +31,14 @@ namespace BankingAppBusiness.TransactionRepo
 
             return dbAccount != null ? true : false;
         }
+        private TransactionToApiModel ConvertToApiModel(double amount, object t)
+        {
+            return new TransactionToApiModel
+            {
+                TotalAmount = amount,
+                CategoryName = Enum.GetName(typeof(CategoryTransaction), t)
+            };
+        }
         private List<TransactionToApiModel> reportGenerator(List<Transaction> transactions)
         {
             var result = new List<TransactionToApiModel>();
@@ -67,14 +75,6 @@ namespace BankingAppBusiness.TransactionRepo
 
             return result;
 
-        }
-        private  TransactionToApiModel ConvertToApiModel(double amount , object t)
-        {
-            return new TransactionToApiModel
-            {
-                TotalAmount = amount,
-                CategoryName = Enum.GetName(typeof(CategoryTransaction),t)
-            };
         }
         public async Task<List<TransactionToApiModel>> GetTransactionReport(Guid id, DateTimeOffset minDate, DateTimeOffset maxDate)
         {
