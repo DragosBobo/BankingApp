@@ -71,7 +71,7 @@ namespace BankingAppBussinessTests
         public async Task TestGetAcountById()
         {
             //Arrange 
-            var sut = new AccountRepository(context);
+            var authRepo = new AccountRepository(context);
             var id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96");
             var account = new Account
             {
@@ -85,11 +85,10 @@ namespace BankingAppBussinessTests
             await context.SaveChangesAsync();
 
             //Act 
-            Account result = await sut.GetAccountById(id);
+            var result = await authRepo.GetAccountById(id);
 
             // Assert 
             result.Should().Be(account);
-
         }
         [TestMethod]
         public async Task TestUpdateAccount()
