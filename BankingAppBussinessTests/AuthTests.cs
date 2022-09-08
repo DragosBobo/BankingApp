@@ -1,7 +1,6 @@
 ﻿using BakingAppDataLayer;
 using BankingAppBusiness.Auth;
 using BankingAppControllers.Models.Requests;
-using DataAcces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -74,7 +73,5 @@ namespace BankingAppBussinessTests
             //Assert
             result.Should().NotBeNull();
         }
-
     }
-
 }
