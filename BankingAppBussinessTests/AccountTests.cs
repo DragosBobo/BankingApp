@@ -3,9 +3,6 @@ using BankingAppApiModels.Models.Requests;
 using BankingAppBusiness.AccountRepo;
 using Microsoft.EntityFrameworkCore;
 using FluentAssertions;
-using AccountType = BankingAppApiModels.Models.Requests.AccountType;
-using Currency = BankingAppApiModels.Models.Requests.Currency;
-
 namespace BankingAppBussinessTests
 {
     [TestClass]
@@ -41,15 +38,15 @@ namespace BankingAppBussinessTests
             {
                 new()
                 {
-                    AccountType = BakingAppDataLayer.AccountType.Debit,
-                    Currency = BakingAppDataLayer.Currency.Ron,
+                    AccountType =(AccountType)0,
+                    Currency = (Currency).0,
                     Iban = "RO033373618371231238293",
                     UserId=new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
                 },
                 new()
                 {
-                    AccountType = BakingAppDataLayer.AccountType.Debit,
-                    Currency = BakingAppDataLayer.Currency.Ron,
+                    AccountType = (AccountType)2,
+                    Currency = (Currency)1,
                     Iban = "RO07361123138373318293",
                     UserId=new Guid("fc231452-7805-40a9-ae8c-9ac4743d4250"),
                 }
@@ -72,8 +69,8 @@ namespace BankingAppBussinessTests
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96"),
-                AccountType = BakingAppDataLayer.AccountType.Credit,
-                Currency = BakingAppDataLayer.Currency.Ron,
+                AccountType = (AccountType)0,
+                Currency = (Currency).0,
                 Iban = "RO033373618371231238293",
                 UserId = id,
             };
@@ -95,8 +92,8 @@ namespace BankingAppBussinessTests
             var account = new Account
             {
                 Id = id,
-                AccountType = BakingAppDataLayer.AccountType.Credit,
-                Currency = BakingAppDataLayer.Currency.Ron,
+                AccountType = (AccountType)0,
+                Currency = (Currency).0,
                 Iban = "RO033373618371231238293",
                 UserId = new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
             };
@@ -104,8 +101,8 @@ namespace BankingAppBussinessTests
             await context.SaveChangesAsync();
             var updateModel = new CreateAccountApiModel
             {
-                AccountType = BankingAppApiModels.Models.Requests.AccountType.Credit,
-                Currency = BankingAppApiModels.Models.Requests.Currency.Ron,
+                AccountType = (AccountType)1,
+                Currency = (Currency).2,
                 UserId = new Guid("3386e917-4437-4342-94c1-f2693117d638"),
                 Iban = "RO012315751234523",
             };
@@ -126,8 +123,8 @@ namespace BankingAppBussinessTests
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
-                AccountType = BakingAppDataLayer.AccountType.Credit,
-                Currency = BakingAppDataLayer.Currency.Ron,
+                AccountType = (AccountType)1,
+                Currency = (Currency).0,
                 Iban = "RO033373618371231238293",
                 UserId = id,
             };
@@ -140,7 +137,6 @@ namespace BankingAppBussinessTests
 
             //Assert
             context.Accounts.Should().BeEmpty();
-            foundAccount.Should().BeNull();
         }
     }
 }

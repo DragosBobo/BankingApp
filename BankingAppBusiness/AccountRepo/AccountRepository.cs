@@ -3,9 +3,6 @@ using BakingAppDataLayer;
 using Microsoft.EntityFrameworkCore;
 using BankingAppApiModels.Models.Requests;
 using BankingAppApiModels.Models;
-using Currency = BakingAppDataLayer.Currency;
-using AccountType = BakingAppDataLayer.AccountType;
-
 namespace BankingAppBusiness.AccountRepo
 {
     public class AccountRepository : IAccountRepository
@@ -106,6 +103,5 @@ namespace BankingAppBusiness.AccountRepo
             }
         }
     }
-
 }
 

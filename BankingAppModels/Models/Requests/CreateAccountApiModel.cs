@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BakingAppDataLayer;
+using System.ComponentModel.DataAnnotations;
 namespace BankingAppApiModels.Models.Requests
 {
     public class CreateAccountApiModel : IValidatableObject
@@ -26,6 +27,4 @@ namespace BankingAppApiModels.Models.Requests
             return validationResults;
         }
     }
-    public enum Currency { Ron, Euro, Dollar }
-    public enum AccountType { Debit, Credit }
 }
