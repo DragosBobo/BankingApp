@@ -6,7 +6,7 @@ namespace BankingAppApiModels.Models.Requests
     public class CreateTransactionApiModel
     {
         [Required]
-        public double amount { get; set; }
+        public double Amount { get; set; }
         [Required]
         public CategoryTransaction CategoryTransaction { get; set; }
         [Required]

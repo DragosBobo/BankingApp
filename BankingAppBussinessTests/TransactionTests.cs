@@ -11,7 +11,7 @@ namespace BankingAppBussinessTests
     public class TransactionTests : BaseTest
     {
         [TestMethod]
-        public async Task TestCreateTransaction()
+        public async Task TestCreateTransactionShouldCreateTransaction()
         {   
             //Arrange
             var transRepo = new TransactionRepository(context);
@@ -19,7 +19,7 @@ namespace BankingAppBussinessTests
             var id = new Guid("a0214d14-5570-4970-9834-c86f321e594b");
             var transaction = new CreateTransactionApiModel
             {  
-                amount = 200,
+                Amount = 200,
                 TransactionDate = date,
                 AccountId = id,
                 CategoryTransaction = CategoryTransaction.Food
@@ -27,14 +27,14 @@ namespace BankingAppBussinessTests
             
             //Act
             await transRepo.CreateTransaction(transaction);
-            var foundTransaction = context.Transactions.FirstOrDefault(x => x.TransactionDate == transaction.TransactionDate && x.Amount == transaction.amount && x.AccountId == transaction.AccountId);
+            var result = context.Transactions.FirstOrDefault();
 
             //Assert
-            context.Transactions.Should().HaveCount(1);
-            transaction.Should().BeEquivalentTo(foundTransaction, opt => opt.Excluding(x => x.Id).Excluding(x => x.Account).Excluding(x => x.AccountId).Excluding(x => x.Amount));
+            transaction.Should().BeEquivalentTo(result, opt => opt.Excluding(x => x.Id).Excluding(x => x.Account).Excluding(x => x.AccountId).Excluding(x => x.Amount));
         }
+
         [TestMethod]
-        public async Task TestGetTransactions()
+        public async Task TestGetTransactionsShouldReturnTransactions()
         {
             //Arrange 
             var transRepo = new TransactionRepository(context);
@@ -64,8 +64,9 @@ namespace BankingAppBussinessTests
             //Assert
             result.Should().HaveCount(transactions.Count);
         }
+
         [TestMethod]
-        public async Task TestGetTransactionById()
+        public async Task TestGetTransactionByIdShouldReturnTransactionsOfOneAccount()
         {
             //Arrange
             var transRepo = new TransactionRepository(context);
@@ -76,14 +77,14 @@ namespace BankingAppBussinessTests
                 {
                     Amount = 200,
                     TransactionDate = DateTime.Now,
-                    AccountId = new Guid("a0214d14-5570-4970-9834-c86f321e594b"),
+                    AccountId = accountId,
                     CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Entertainment
                 },
                 new Transaction()
                 {
                     Amount = 350,
                     TransactionDate = DateTime.Now,
-                    AccountId = new Guid("cb254d14-5570-4323-9834-c86f3321594b"),
+                    AccountId = accountId,
                     CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Food
                 }
             };
@@ -94,11 +95,11 @@ namespace BankingAppBussinessTests
             var result = await transRepo.GetAccountTransaction(accountId);
 
             //Assert
-            result.Should().NotBeNull();
-            result.Should().HaveCount(1);
+            result.Should().HaveCount(transactions.Count);
         }
+
         [TestMethod]
-        public async Task TestGetTransactionReport()
+        public async Task TestGetTransactionReportShouldReturnReportForOneAccount()
         {
             //Arrange
             var transRepo = new TransactionRepository(context);
@@ -136,7 +137,6 @@ namespace BankingAppBussinessTests
             var result =  await transRepo.GetTransactionReport(accountId, startDate, endDate);
 
             //Assert
-            result.Should().NotBeNull();
             result.Should().HaveCount(2);
         }
     }
