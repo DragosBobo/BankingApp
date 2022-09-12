@@ -9,7 +9,7 @@ namespace BankingAppBussinessTests
     public class AccountRepositoryTests : BaseTest
     {
         [TestMethod]
-        public async Task TestAddAccount()
+        public async Task TestAddAccountShouldCreateOneAccount()
         {
             //Arrange 
             var authRepo = new AccountRepository(context);
@@ -38,15 +38,15 @@ namespace BankingAppBussinessTests
             {
                 new()
                 {
-                    AccountType =(AccountType)0,
-                    Currency = (Currency).0,
+                    AccountType =AccountType.Credit,
+                    Currency = Currency.Ron,
                     Iban = "RO033373618371231238293",
                     UserId=new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
                 },
                 new()
                 {
-                    AccountType = (AccountType)2,
-                    Currency = (Currency)1,
+                    AccountType = AccountType.Debit,
+                    Currency = Currency.Dollar,
                     Iban = "RO07361123138373318293",
                     UserId=new Guid("fc231452-7805-40a9-ae8c-9ac4743d4250"),
                 }
@@ -61,7 +61,7 @@ namespace BankingAppBussinessTests
             response.Should().HaveCount(accounts.Count);
         }
         [TestMethod]
-        public async Task TestGetAcountById()
+        public async Task TestGetAcountByIdShouldReturnOneAccount()
         {
             //Arrange 
             var authRepo = new AccountRepository(context);
@@ -69,8 +69,8 @@ namespace BankingAppBussinessTests
             var account = new Account
             {
                 Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb96"),
-                AccountType = (AccountType)0,
-                Currency = (Currency).0,
+                AccountType = AccountType.Credit,
+                Currency = Currency.Euro,
                 Iban = "RO033373618371231238293",
                 UserId = id,
             };
@@ -84,7 +84,7 @@ namespace BankingAppBussinessTests
             result.Should().Be(account);
         }
         [TestMethod]
-        public async Task TestUpdateAccount()
+        public async Task TestUpdateAccountShouldUpdateOneAccount()
         {
             //Arrange
             var authRepo = new AccountRepository(context);
@@ -92,8 +92,8 @@ namespace BankingAppBussinessTests
             var account = new Account
             {
                 Id = id,
-                AccountType = (AccountType)0,
-                Currency = (Currency).0,
+                AccountType = AccountType.Credit,
+                Currency = Currency.Euro,
                 Iban = "RO033373618371231238293",
                 UserId = new Guid("cff9d17f-bdfc-450d-a6c7-6aa8467383c8"),
             };
@@ -101,8 +101,8 @@ namespace BankingAppBussinessTests
             await context.SaveChangesAsync();
             var updateModel = new CreateAccountApiModel
             {
-                AccountType = (AccountType)1,
-                Currency = (Currency).2,
+                AccountType = AccountType.Credit,
+                Currency = Currency.Euro,
                 UserId = new Guid("3386e917-4437-4342-94c1-f2693117d638"),
                 Iban = "RO012315751234523",
             };
@@ -115,16 +115,16 @@ namespace BankingAppBussinessTests
             accountUpdated.Should().BeEquivalentTo(updateModel);
         }
         [TestMethod]
-        public async Task TestDeleteAccount()
+        public async Task TestDeleteAccountShouldDeleteAccount()
         {
             //Arrange
             var sut = new AccountRepository(context);
             var id =new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86");
             var account = new Account
             {
-                Id = new Guid("2df99e1f-ca5c-4c62-a444-c379b900cb86"),
-                AccountType = (AccountType)1,
-                Currency = (Currency).0,
+                Id = id,
+                AccountType = AccountType.Credit,
+                Currency = Currency.Euro,
                 Iban = "RO033373618371231238293",
                 UserId = id,
             };
@@ -137,6 +137,7 @@ namespace BankingAppBussinessTests
 
             //Assert
             context.Accounts.Should().BeEmpty();
+            foundAccount.Should().BeNull();
         }
     }
 }

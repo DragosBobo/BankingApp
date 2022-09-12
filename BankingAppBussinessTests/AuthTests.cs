@@ -24,7 +24,7 @@ namespace BankingAppBussinessTests
         }
         [TestMethod]
 
-        public async Task TestRegister()
+        public async Task TestRegisterShouldCreateUser()
         {   //Arange
             var authRepo = new AuthRepository(context, userManager.Object, signInManager.Object);
             var user = new RegisterApiModel
@@ -47,7 +47,7 @@ namespace BankingAppBussinessTests
         }
         [TestMethod]
 
-        public async Task TestLogin()
+        public async Task TestLoginShouldLoginUser()
         {
             //Arange
             var authRepo = new AuthRepository(context, userManager.Object, signInManager.Object);
