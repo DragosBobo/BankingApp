@@ -1,8 +1,8 @@
 using BakingAppDataLayer;
+using BankingAppApiModels.Models;
 using BankingAppApiModels.Models.Requests;
 using BankingAppBusiness.TransactionRepo;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using CategoryTransaction = BankingAppApiModels.Models.Requests.CategoryTransaction;
 
 namespace BankingAppBussinessTests
@@ -66,7 +66,7 @@ namespace BankingAppBussinessTests
         }
 
         [TestMethod]
-        public async Task TestGetTransactionByIdShouldReturnTransactionsOfOneAccount()
+        public async Task TestGetTransactionByIdShouldReturnTransactionsForOneAccount()
         {
             //Arrange
             var transRepo = new TransactionRepository(context);
@@ -121,13 +121,19 @@ namespace BankingAppBussinessTests
                     TransactionDate = DateTime.Now,
                     AccountId = accountId,
                     CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Food
-                },
-                new Transaction()
+                }
+            };
+            var expectedResult = new List<TransactionToApiModel>() 
+            {
+                new TransactionToApiModel
                 {
-                    Amount = 750,
-                    TransactionDate = DateTime.Now,
-                    AccountId = new Guid("52971ead-df4b-4a87-84a1-f7a710f164ba"),
-                    CategoryTransaction = (BakingAppDataLayer.CategoryTransaction)CategoryTransaction.Food
+                    CategoryName = CategoryTransaction.Entertainment.ToString(),
+                    TotalAmount = 200,
+                },
+                new TransactionToApiModel
+                {
+                    CategoryName = CategoryTransaction.Food.ToString(),
+                    TotalAmount = 350,
                 }
             };
             context.Transactions.AddRange(transactions);
@@ -137,7 +143,7 @@ namespace BankingAppBussinessTests
             var result =  await transRepo.GetTransactionReport(accountId, startDate, endDate);
 
             //Assert
-            result.Should().HaveCount(2);
+            expectedResult.Should().BeEquivalentTo(result); 
         }
     }
 }
