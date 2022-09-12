@@ -20,7 +20,7 @@ namespace BankingAppBusiness.TransactionRepo
             return new Transaction
             {
                 TransactionDate = model.TransactionDate,
-                Amount = model.amount,
+                Amount = model.Amount,
                 CategoryTransaction= (BakingAppDataLayer.CategoryTransaction)model.CategoryTransaction,
                 AccountId = model.AccountId,
             };
@@ -57,39 +57,44 @@ namespace BankingAppBusiness.TransactionRepo
                     result.Add(ConvertToApiModel(totalAmount, t));
                 }
             }
+
             return result;
         }
         public async Task CreateTransaction(CreateTransactionApiModel model)
         {
-            var transaction = ConvertToDbModel(model);
+             var transaction = ConvertToDbModel(model);
              await _context.Transactions.AddAsync(transaction);
              await _context.SaveChangesAsync();
-          
         }
         public async Task<List<TransactionToApiModel>> GetTransactions()
         {
             var transactions = await _context.Transactions.ToListAsync();
-            List<TransactionToApiModel> result = new List<TransactionToApiModel>();
+            var result = new List<TransactionToApiModel>();
+
             foreach (var transaction in transactions)
-                result.Add(ConvertToApiModel(transaction.Amount,transaction.CategoryTransaction));
+            { 
+                result.Add(ConvertToApiModel(transaction.Amount, transaction.CategoryTransaction)); 
+            }
 
             return result;
-
         }
         public async Task<List<TransactionToApiModel>> GetTransactionReport(Guid id, DateTimeOffset minDate, DateTimeOffset maxDate)
         {
-            List<Transaction> transactions = await _context.Transactions.Where(x => x.AccountId == id && x.TransactionDate >= minDate && x.TransactionDate<=maxDate).ToListAsync();
+            var transactions = await _context.Transactions.Where(x => x.AccountId == id && x.TransactionDate >= minDate && x.TransactionDate<=maxDate).ToListAsync();
             var result = reportGenerator(transactions);
+
             return result;
         }
-        public async Task<List<TransactionToApiModel>> GetAccountTransaction(Guid id)
+        public async Task<List<TransactionToApiModel>> GetAccountTransaction(Guid accountId)
         {
             var result = new List<TransactionToApiModel>();
-            List<Transaction> transactions = await _context.Transactions.Where(x => x.AccountId == id ).ToListAsync();
+            var transactions = await _context.Transactions.Where(x => x.AccountId == accountId ).ToListAsync();
+
             foreach(Transaction transaction in transactions)
             {
                 result.Add(ConvertToApiModel(transaction.Amount, transaction.CategoryTransaction));
             }
+
             return result;
         }
     }
