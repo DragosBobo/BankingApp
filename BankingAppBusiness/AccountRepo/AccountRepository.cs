@@ -3,7 +3,6 @@ using BakingAppDataLayer;
 using Microsoft.EntityFrameworkCore;
 using BankingAppApiModels.Models.Requests;
 using BankingAppApiModels.Models;
-
 namespace BankingAppBusiness.AccountRepo
 {
     public class AccountRepository : IAccountRepository
@@ -12,7 +11,7 @@ namespace BankingAppBusiness.AccountRepo
 
         public AccountRepository(DataContext context)
         {
-             _context = context;
+            _context = context;
         }
 
         private bool IsExist(Guid id)
@@ -38,9 +37,10 @@ namespace BankingAppBusiness.AccountRepo
         {
             return new AccountApiModel
             {
-                Currency= (BankingAppApiModels.Models.Currency)model.Currency,
-                AccountType= (BankingAppApiModels.Models.AccountType)model.AccountType,
-                Iban = model.Iban
+                Currency = Enum.GetName(typeof(Currency), model.Currency),
+                AccountType = Enum.GetName(typeof(AccountType), model.AccountType),
+                Iban = model.Iban,
+                AccountId = model.Id.ToString(),
             };
         }
 
@@ -53,21 +53,21 @@ namespace BankingAppBusiness.AccountRepo
         }
         public async Task<List<AccountApiModel>> GetAccounts()
         {
-           var accounts = await _context.Accounts.ToListAsync();
-           List<AccountApiModel> result = new List<AccountApiModel>();
+            var accounts = await _context.Accounts.ToListAsync();
+            List<AccountApiModel> result = new List<AccountApiModel>();
 
             foreach (var account in accounts)
                 result.Add(ConvertToApiModel(account));
 
-           return result;
+            return result;
         }
         public async Task<Account> GetAccountById(Guid id)
         {
             var account = await _context.Accounts.FindAsync(id);
 
-            return account == null ? null : account ;
+            return account == null ? null : account;
         }
-        public async Task<string> UpdateAccount(Guid id , CreateAccountApiModel model)
+        public async Task<string> UpdateAccount(Guid id, CreateAccountApiModel model)
         {
             if (IsExist(id))
             {
@@ -103,6 +103,5 @@ namespace BankingAppBusiness.AccountRepo
             }
         }
     }
-        
- }
+}
 
