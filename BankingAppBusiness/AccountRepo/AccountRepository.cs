@@ -61,9 +61,9 @@ namespace BankingAppBusiness.AccountRepo
 
             return result;
         }
-        public async Task<Account> GetAccountById(Guid id)
+        public async Task<List<Account>> GetAccountById(Guid id)
         {
-            var account = await _context.Accounts.FindAsync(id);
+            var account = await _context.Accounts.Where(x=>x.UserId==id).ToListAsync();
 
             return account == null ? null : account;
         }
