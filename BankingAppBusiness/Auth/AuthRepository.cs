@@ -62,10 +62,10 @@ namespace BankingAppBusiness.Auth
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AexAmsGRzrXbOcgK8lhB"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
-            {   new Claim(ClaimTypes.NameIdentifier, model.Id.ToString()),
-                new Claim(ClaimTypes.Name, model.UserName),
-                new Claim(ClaimTypes.Email , model.Email),
-                new Claim(ClaimTypes.GivenName , model.FirstName),
+            {   new Claim(JwtRegisteredClaimNames.NameId, model.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, model.UserName),
+                new Claim(JwtRegisteredClaimNames.Email , model.Email),
+                new Claim(JwtRegisteredClaimNames.GivenName , model.FirstName),
                 new Claim(JwtRegisteredClaimNames.Nbf , new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
                 new Claim(JwtRegisteredClaimNames.Exp , new DateTimeOffset(DateTime.Now.AddHours(1)).ToUnixTimeSeconds().ToString()),
             };

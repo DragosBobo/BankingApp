@@ -15,9 +15,9 @@ namespace BankingAppBusiness.AccountRepo
         }
 
         private bool IsExist(Guid id)
-        {
+        {   
             var dbAccount = _context.Accounts.FirstOrDefault(x => x.Id == id);
-
+           
             return dbAccount != null ? true : false;
         }
 
@@ -61,11 +61,11 @@ namespace BankingAppBusiness.AccountRepo
 
             return result;
         }
-        public async Task<List<Account>> GetAccountById(Guid id)
-        {
-            var account = await _context.Accounts.Where(x=>x.UserId==id).ToListAsync();
-
-            return account == null ? null : account;
+        public async Task<List<AccountApiModel>> GetAccountById(Guid id)
+        {    var result = new List<AccountApiModel>();
+            var accounts = await _context.Accounts.Where(x=>x.UserId==id).ToListAsync();
+            accounts.ForEach(x => result.Add(ConvertToApiModel(x)));
+            return result == null ? null : result;
         }
         public async Task<string> UpdateAccount(Guid id, CreateAccountApiModel model)
         {
