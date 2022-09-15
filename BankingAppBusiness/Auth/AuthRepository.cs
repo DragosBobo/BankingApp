@@ -69,7 +69,7 @@ namespace BankingAppBusiness.Auth
                 new Claim(JwtRegisteredClaimNames.Nbf , new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
                 new Claim(JwtRegisteredClaimNames.Exp , new DateTimeOffset(DateTime.Now.AddHours(1)).ToUnixTimeSeconds().ToString()),
             };
-            var token = new JwtSecurityToken(default, default, claims, signingCredentials: credentials);
+            var token = new JwtSecurityToken(issuer: "localhost", audience: "localhost", claims, signingCredentials: credentials,expires:DateTime.Now.AddDays(1));
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
         public async Task<User> Authenticate(LoginApiModel model)
