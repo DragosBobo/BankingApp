@@ -19,9 +19,9 @@ namespace BankingAppControllers.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAccount([FromBody] CreateAccountApiModel model)
         {
-            await _accountRepository.AddAccount(model);
+            var response = await _accountRepository.AddAccount(model);
 
-            return Ok("Account created with succes ! ");
+            return Ok(response);
         }
         [HttpGet]
 
@@ -44,14 +44,14 @@ namespace BankingAppControllers.Controllers
         {
             await _accountRepository.UpdateAccount(id, model);
 
-            return Ok($"Account with id : {id} has been successfully updated !");
+            return Ok(id);
         }
         [HttpDelete]
         public async Task<ActionResult> DeleteAccount(Guid id)
         {
             await _accountRepository.DeleteAccount(id);
 
-            return Ok($"Account with id : {id} has been successfully deleted ! ");
+            return Ok(id);
         }
     }
 }
