@@ -9,7 +9,7 @@ namespace BankingAppBusiness.TransactionRepo
     
     public interface ITransactionRepository
     {   
-        Task<List<TransactionToApiModel>> GetTransactionReport(Guid transactionId,DateTimeOffset startDate , DateTimeOffset lastDate);
+        Task<List<TransactionRaportModel>> GetTransactionReport(Guid transactionId,DateTimeOffset startDate , DateTimeOffset lastDate);
         Task CreateTransaction(CreateTransactionApiModel model);
         Task<List<TransactionToApiModel>> GetTransactions();
         Task<List<TransactionToApiModel>> GetAccountTransaction(Guid id);
