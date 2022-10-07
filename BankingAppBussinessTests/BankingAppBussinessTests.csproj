@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BankingAppBusiness\BankingAppBusiness.csproj" />
+    <ProjectReference Include="..\BankingAppDataAcces\BakingAppDataLayer.csproj" />
   </ItemGroup>
 
 </Project>

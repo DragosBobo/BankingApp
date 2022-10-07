@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankingAppBussinessTests
 {
-    public class BaseTest 
+    public class BaseTest
     {
         protected readonly DataContext context;
         public BaseTest()

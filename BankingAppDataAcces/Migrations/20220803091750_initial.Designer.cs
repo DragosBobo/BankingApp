@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BakingAppDataLayer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220721132848_Update")]
-    partial class Update
+    [Migration("20220803091750_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,7 +61,7 @@ namespace BakingAppDataLayer.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<int>("CategoryTransation")
+                    b.Property<int>("CategoryTransaction")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("TransactionDate")
