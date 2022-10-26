@@ -7,5 +7,6 @@ namespace BankingAppBusiness.Auth
     {   
         Task Register(RegisterApiModel model);
         Task<string> Login(LoginApiModel model);
+        Task<bool> ValidateEmail(string email);
     }
 }

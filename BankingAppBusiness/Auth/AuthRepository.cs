@@ -57,6 +57,12 @@ namespace BankingAppBusiness.Auth
                 return null;
             }
         }
+        public async Task<bool> ValidateEmail(string email)
+        {
+            var result = await _userManager.FindByEmailAsync(email);
+            if (result!=null) return false;
+            else return true;
+        }
         private string Generate(User model)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AexAmsGRzrXbOcgK8lhB"));
@@ -82,5 +88,6 @@ namespace BankingAppBusiness.Auth
             }
             return null;
         }
+     
     }
 }

@@ -37,5 +37,13 @@ namespace BankingAppControllers.Controllers
                 return Ok(login);
             }
         }
+        [AllowAnonymous]
+        [HttpGet("validateEmail")]
+        public async Task<ActionResult<bool>> ValidateEmail(string email)
+        {
+            var result = await _auth.ValidateEmail(email);
+            if (result) return true;
+            else return false;
+        }
     }
 }
